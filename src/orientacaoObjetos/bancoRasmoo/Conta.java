@@ -26,4 +26,13 @@ public class Conta {
         }
     }
 
+    // método com dois parametros
+    void transferir(double valor, Conta destino){
+        boolean conseguiuSacar = this.sacar(valor); // this = referencia a propria classe -> referência a quem está invocando
+        // se eu conseguir sacar o dinheiro da conta atual(conta que invoca transferir) eu realizo a transferencia/deposito
+        if (conseguiuSacar) {
+            destino.depositar(valor);
+        }
+    }
+
 }
