@@ -15,4 +15,15 @@ public class Conta {
         saldo += valor;     // saldo = saldo + valor;
     }
 
+    // métodos com retorno
+    boolean sacar(double valor) {
+        if (saldo >= valor){
+            saldo -= valor;     // saldo = saldo - valor
+            return true;
+
+        } else {
+            return false;
+        }
+    }
+
 }
