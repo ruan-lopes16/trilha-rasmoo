@@ -5,7 +5,10 @@ public class Conta {
     //ATRIBUTOS
     int agencia;
     int numero;
-    String titular;     // String é uma classe - titular é um objeto -> por isso 'null' ao não atribuir valor na instanciação
+
+    //String titular;     // String é uma classe - titular é um objeto -> por isso 'null' ao não atribuir valor na instanciação
+    Cliente titular;    // referencia/relação entre classe(composição) -> o titular é um Cliente
+
     double saldo;
 
     // COMPORTAMENTOS/MÉTODOS

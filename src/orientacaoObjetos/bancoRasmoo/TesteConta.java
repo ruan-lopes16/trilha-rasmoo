@@ -9,7 +9,7 @@ public class TesteConta {
         primeiraConta.saldo = 1525.40;
         primeiraConta.agencia = 1;
         primeiraConta.numero = 100;
-        primeiraConta.titular = "Ruan";
+        // primeiraConta.titular = "Ruan";      // coisa do passado, antes da composição - Agora preciso instanciar um Cliente para atribuir o nome ao titular
 
         // exibindo na tela
         System.out.println("O titular da primeira conta é: " + primeiraConta.titular);
