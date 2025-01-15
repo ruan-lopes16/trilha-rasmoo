@@ -7,4 +7,12 @@ public class Conta {
     int numero;
     String titular;     // String é uma classe - titular é um objeto -> por isso 'null' ao não atribuir valor na instanciação
     double saldo;
+
+    // COMPORTAMENTOS/MÉTODOS
+
+    // métodos sem retorno
+    void depositar(double valor) { // void -> somente executa ação - sem retorno
+        saldo += valor;     // saldo = saldo + valor;
+    }
+
 }
