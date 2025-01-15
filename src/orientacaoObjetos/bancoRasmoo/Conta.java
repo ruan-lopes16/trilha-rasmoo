@@ -5,6 +5,6 @@ public class Conta {
     //ATRIBUTOS
     int agencia;
     int numero;
-    String titular;
+    String titular;     // String é uma classe - titular é um objeto -> por isso 'null' ao não atribuir valor na instanciação
     double saldo;
 }
