@@ -16,7 +16,7 @@ public class TesteConstrutor {
         System.out.println("--------------------------");
 
         Cliente rafaella = new Cliente("Rafaella", "321654987");
-        Conta conta2 = new Conta(237, 1025);    // instanciando Conta com 2 parametros
+        Conta conta2 = new Conta(237, 1025, rafaella);    // instanciando Conta com 3 parametros
 
         conta2.setTitular(rafaella);    // nesse caso preciso setar o titular
 
@@ -27,7 +27,8 @@ public class TesteConstrutor {
 
         System.out.println("--------------------------");
 
-        Conta conta3 = new Conta();     // instanciando Conta default
+        // Não existe mais default
+/*      Conta conta3 = new Conta();     // instanciando Conta default
         Cliente cassio = new Cliente("Cássio", "987654321");
 
         conta3.setTitular(cassio);  // nesse caso preciso setar o titular
@@ -36,6 +37,6 @@ public class TesteConstrutor {
         System.out.println(conta3.getNumero());     // 0
         System.out.println(conta3.getTitular().getNome());   // Cássio
         System.out.println(conta3.getTitular().getCpf());   // 987654321
-
+*/
     }
 }

@@ -6,9 +6,14 @@ public class Conta {
     private int numero;
     private Cliente titular;
     private double saldo; // meu atributo saldo, só pode ser acessado pela propria classe -> Conta, ou seja, não consigo declarar diretamente o saldo em uma outra classe
+ // private int total;     // pertence ao objeto - atributos de instancia
+    private static int total; // static - esse total é da Conta (classe) e não do objeto Conta instanciado(new)
 
     // CONSTRUTOR
     // mais de um construtor = sobrecarga de contrutores
+
+/*  // irei usar apenas construtor com todos os parametros
+
     public Conta(){
         // construtor default - sem parametros
     }
@@ -21,7 +26,7 @@ public class Conta {
             System.out.println("A agência não pode ser menor ou igual a 0(zero)");
         }
         this.numero = numero;
-    }
+    } */
 
     public Conta(int agencia, int numero, Cliente titular) { // construtor com 3 parametros
         if (agencia > 0) {
@@ -32,6 +37,7 @@ public class Conta {
         }
         this.numero = numero;
         this.titular = titular;
+        Conta.total++;
     }
 
     // COMPORTAMENTOS/MÉTODOS
@@ -79,7 +85,12 @@ public class Conta {
         return this.titular;
     }
 
+    public static int getTotal(){ // static - diz que o metodo pertence a classe e nao ao objeto/instancia
+        return Conta.total;
+    }
+
     // setters - metodos que vao atribuir valores - sem retorno(void)
+
  /* NESSE CASO NAO É PRECISO DO SET - mas fica a nivel de curiosidade
 
     public void setSaldo(double saldo) {    // inserir valor no saldo
