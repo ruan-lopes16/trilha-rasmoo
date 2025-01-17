@@ -1,11 +1,19 @@
 package orientacaoObjetos.bancoRasmooEncapsulamento;
 
+import java.util.Locale;
+
 public class Cliente {
     // atributos
     private String nome;
     private String cpf;
     private String profissao;
     private double salario;
+
+    // construtor
+    public Cliente (String nome, String cpf){   // dois parametros
+        this.nome = nome;
+        this.cpf = cpf;
+    }
 
     //getters e setters
     // nome

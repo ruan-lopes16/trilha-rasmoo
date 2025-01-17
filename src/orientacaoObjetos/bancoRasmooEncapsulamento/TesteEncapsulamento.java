@@ -32,15 +32,15 @@ public class TesteEncapsulamento {
 */
 
         // AGORA
-        Conta conta = new Conta();
+        Conta conta = new Conta(1, 10, new Cliente("Ruan", "12345679801"));
         conta.depositar(1000);
         conta.sacar(500);
         conta.setAgencia(10);
 
-        conta.setTitular(new Cliente());    // instanciando Cliente atraves da conta
+    //  conta.setTitular(new Cliente());    // instanciando Cliente atraves da conta - SEM CONSTRUTOR
         // populando atraves da conta
-        conta.getTitular().setNome("Ruan");
-        conta.getTitular().setCpf("12345678901");
+     // conta.getTitular().setNome("Ruan");
+     // conta.getTitular().setCpf("12345678901");
         conta.getTitular().setProfissao("DevJr");
         conta.getTitular().setSalario(4000);
 

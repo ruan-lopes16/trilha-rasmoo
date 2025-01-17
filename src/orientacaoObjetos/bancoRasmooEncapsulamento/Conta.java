@@ -7,6 +7,33 @@ public class Conta {
     private Cliente titular;
     private double saldo; // meu atributo saldo, só pode ser acessado pela propria classe -> Conta, ou seja, não consigo declarar diretamente o saldo em uma outra classe
 
+    // CONSTRUTOR
+    // mais de um construtor = sobrecarga de contrutores
+    public Conta(){
+        // construtor default - sem parametros
+    }
+
+    public Conta(int agencia, int numero) { // construtor com 2 parametros
+        if (agencia > 0) {
+            this.agencia = agencia;
+        } else {
+            // para tudo, lança um erro
+            System.out.println("A agência não pode ser menor ou igual a 0(zero)");
+        }
+        this.numero = numero;
+    }
+
+    public Conta(int agencia, int numero, Cliente titular) { // construtor com 3 parametros
+        if (agencia > 0) {
+            this.agencia = agencia;
+        } else {
+            // para tudo, lança um erro
+            System.out.println("A agência não pode ser menor ou igual a 0(zero)");
+        }
+        this.numero = numero;
+        this.titular = titular;
+    }
+
     // COMPORTAMENTOS/MÉTODOS
 
     // métodos sem retorno
@@ -59,17 +86,17 @@ public class Conta {
         this.saldo = saldo;
     }*/
 
-    public void setAgencia(int agencia){
+    public void setAgencia(int agencia){ // não preciso remover, pois posso alterar em algum momento especifico
         if (agencia > 0) {
             this.agencia = agencia;
         }
     }
 
-    public void setNumero(int numero){
+    public void setNumero(int numero){ // não preciso remover, pois posso alterar em algum momento especifico
         this.numero = numero;
     }
 
-    public void setTitular(Cliente titular) {
+    public void setTitular(Cliente titular) { // não preciso remover, pois posso alterar em algum momento especifico
         this.titular = titular;
     }
 }
