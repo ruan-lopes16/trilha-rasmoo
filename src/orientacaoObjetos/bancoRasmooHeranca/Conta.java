@@ -1,6 +1,6 @@
 package orientacaoObjetos.bancoRasmooHeranca;
 
-public class Conta {
+public abstract class Conta {   // passa ser abstrata, servindo apenas como modelo PRINCIPAL (base) e não mais instanciada(new) - somente em herança
 
     // atributos
     private int agencia;
