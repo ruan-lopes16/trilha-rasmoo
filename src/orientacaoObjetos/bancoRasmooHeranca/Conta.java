@@ -30,7 +30,7 @@ public class Conta {
     boolean sacar( double valor ) {
         if ( this.saldo >= valor ) {
             this.saldo -= valor;
-            System.out.println( "Saque de R$" + valor + " realizado com sucesso!" );
+            // System.out.println( "Saque de R$" + valor + " realizado com sucesso!" );
             return true;
 
         } else {
