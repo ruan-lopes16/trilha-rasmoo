@@ -80,4 +80,14 @@ public class Conta {
         this.titular = titular;
     }
 
+    // toString
+    @Override
+    public String toString() {
+        return "Conta{ " +
+                "agencia = " + agencia +
+                ", numero = " + numero +
+                ", titular = " + titular +
+                ", saldo = " + saldo +
+                " }";
+    }
 }

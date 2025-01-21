@@ -19,5 +19,8 @@ public class TestePolimorfismo {
 
         System.out.println( "Saldo CC: R$" + cc.getSaldo() );
         System.out.println( "Saldo CP: R$" + cp.getSaldo() );
+
+        System.out.println(cc);
+        System.out.println(cp);
     }
 }
