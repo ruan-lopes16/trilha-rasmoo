@@ -14,4 +14,10 @@ public class ContaCorrente extends Conta {
         double novoValor = valor + 2; // taxa de 2 reais ao sacar
         return super.sacar( novoValor );  // chamando metodo da classe Conta (super)
     }
+
+    // implementando método abstrato
+    @Override
+    public void gerarExtrato() {
+        System.out.println( "Gerando extrato para Conta Corrente..." );
+    }
 }
