@@ -48,6 +48,9 @@ public abstract class Conta {   // passa ser abstrata, servindo apenas como mode
         }
     }
 
+    // método abstrado
+    public abstract void gerarExtrato(); // sem "corpo de código" - implementado em cada classe (OBRIGATORIO)
+
     // getters
     public double getSaldo() {
         return this.saldo;
