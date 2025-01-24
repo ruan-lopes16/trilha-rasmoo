@@ -14,7 +14,7 @@ public class Conta {
         if ( agencia > 0 ) {
             this.agencia = agencia;
         } else {
-            System.out.println( "A agência não pode ser ser 0(zero)" );
+            System.out.println( "A agência não pode ser 0(zero)" );
         }
         this.numero = numero;
         this.titular = titular;
