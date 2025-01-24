@@ -3,6 +3,8 @@ package exceptions;
 public class TesteException {
     public static void main(String[] args) {
 
+        // TROQUE OS COMENTARIOS PARA TESTAR AS EXCEPTIONS
+
         // fazendo tratamento de erros
         try { // tente fazer... (TUDO QUE QUERO FAZER E QUE PODE DAR ERRO)
             // int resultado = 5 / 0;   // estoura ArithmeticException
@@ -12,13 +14,22 @@ public class TesteException {
             Cliente cliente = new Cliente( "Ruan", "147258369 ");
             Conta conta = new Conta(3242, 8732, cliente );
             conta.depositar( 1000 ); // estoura NullPointerException, pois Conta não foi instanciada(new)
+            // conta.sacar( 1000 );
+            conta.sacar( 1100 ); // estoura exception "Saldo insuficiente!"
 
             System.out.println( "O saldo da minha conta é: R$" + conta.getSaldo() );
 
-        }
-        // PARA NAO PRECISAR "ENCADEAR" CATCH's
-        catch ( NullPointerException | ArithmeticException ex ) {
-            System.out.println( "Ocorreu um NullPointer. O motivo foi: " + ex.getMessage() );
+
+/*            ArithmeticException arithmeticException = new ArithmeticException( "Deu ruim!" );  // chamando construtor de uma exception + msg
+            // lançando exception
+            throw arithmeticException;  // força o código a lançar essa exceção, ou seja, cair no catch
+
+            // OU de forma "compacta"
+            throw new ArithmeticException( "Deu ruim!" );
+            */
+
+        } catch ( RuntimeException ex ) {
+            System.out.println( "O motivo foi: " + ex.getMessage() );
 
         } finally {
             System.out.println( "Esse bloco sempre será executado." );

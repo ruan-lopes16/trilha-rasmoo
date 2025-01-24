@@ -27,16 +27,27 @@ public class Conta {
         System.out.println( "Deposito de R$" + valor + " realizado com sucesso!" );
     }
 
+/*  COMENTAR PARA COMPARAR ANTES E DEPOIS
     boolean sacar( double valor ) {
         if ( this.saldo >= valor ) {
-            this.saldo += valor;
+            this.saldo -= valor;
             return true;
         } else {
             System.out.println( "Verifique seu saldo e tente novamente" );
             return false;
         }
+    } */
+
+    void sacar ( double valor ) {
+        if ( this.saldo < valor ) {
+            throw new RuntimeException( "Saldo insuficiente!" );    // tudo o que vier após esse erro não será chamado
+        }
+        // caso passe pela verificação, e não caia na exception, segue o código e executa o proximo comando:
+        this.saldo -= valor;
     }
 
+/*
+COMENTAR PARA COMPARAR ANTES E DEPOIS
     void transferir( double valor, Conta destino ) {
         boolean conseguiuSacar = this.sacar( valor );
 
@@ -44,6 +55,13 @@ public class Conta {
             destino.depositar( valor );
             System.out.println( "Você recebeu um depósito de R$" + valor );
         }
+    } */
+
+    void transferir( double valor, Conta destino ) {
+       this.sacar( valor );
+       destino.depositar( valor );
+       System.out.println( "Você recebeu um depósito de R$" + valor );
+
     }
 
     // getters

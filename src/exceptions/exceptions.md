@@ -60,3 +60,42 @@ finally {
 
 **VANTAGENS**
 Serve para fazer um "encerramento" no código.
+
+### LANÇANDO EXCEÇÕES (throw)
+Gerar erro e jogar na pilha de execução
+
+-> Lançando exceção do tipo: ArithmeticException
+```java
+ArithmeticException arithmeticException = new ArithmeticException( "Deu ruim!" );  // chamando construtor de uma exception + msg
+// lançando exception
+throw arithmeticException;  // força o código a lançar essa exceção, ou seja, cair no catch
+```
+Existe uma forma mais compacta e direto de fazer isso:
+```java
+throw new ArithmeticException( "Deu ruim!" );
+```
+
+Como comentado, me possibilita fazer o lançamento dessa exceção, em outras palavras faz cair no catch
+
+*RuntimeException*
+CLASSE genérica de **Exceptions**, pois ela mãe de todas as outras **Exceptions**
+```java
+// Conta.java
+void sacar ( double valor ) {
+    if ( this.saldo < valor ) {
+            throw new RuntimeException( "Saldo insuficiente!" );    // tudo o que vier após esse erro não será chamado
+    }
+
+    this.saldo -= valor;
+}
+```
+
+```java
+// TesteException.java (main)
+catch ( RuntimeException ex ) {
+    System.out.println( "O motivo foi: " + ex.getMessage() );
+
+    }
+```
+
+Ao exeutar meu `main` e cair em qualquer **`Exception`** que seja, vai me retornar uma mensagem de erro da respectiva classe da **`Exception`**, como exemplo pode retornar mensagem de "ArithmeticException", "NullPointerException", etc. 
