@@ -40,7 +40,7 @@ public class Conta {
 
     void sacar ( double valor ) {
         if ( this.saldo < valor ) {
-            throw new RuntimeException( "Saldo insuficiente!" );    // tudo o que vier após esse erro não será chamado
+            throw new SaldoInsuficienteException( "Saldo insuficiente!" );    // tudo o que vier após esse erro não será chamado
         }
         // caso passe pela verificação, e não caia na exception, segue o código e executa o proximo comando:
         this.saldo -= valor;

@@ -98,4 +98,41 @@ catch ( RuntimeException ex ) {
     }
 ```
 
-Ao exeutar meu `main` e cair em qualquer **`Exception`** que seja, vai me retornar uma mensagem de erro da respectiva classe da **`Exception`**, como exemplo pode retornar mensagem de "ArithmeticException", "NullPointerException", etc. 
+Ao exeutar meu `main` e cair em qualquer **`Exception`** que seja, vai me retornar uma mensagem de erro da respectiva classe da **`Exception`**, como exemplo pode retornar mensagem de "ArithmeticException", "NullPointerException", etc.
+
+## CHECKED E UNCHECKED EXCEPTIONS
+
+### UNCHECKED
+Exceções que o compilador não verifica
+
+### CHECKED
+Exceções que o compilador verifica e pode ou não acarretar em um erro de compilação
+
+```java
+package exceptions;
+
+import java.io.FileNotFoundException;
+
+public class TesteCheckedExceptions {
+    public static void main(String[] args) {
+
+        try { // fazendo tratamento
+            exemploChecked();
+        } catch (FileNotFoundException e) {
+            System.out.println( "Deu ruim aqui! " + e.getMessage() );
+        }
+    }
+
+    public static void exemploChecked() throws FileNotFoundException { // significa q o metodo vai lançar exceção mas nao quero tratá-lo
+        throw new FileNotFoundException( "Segura a bomba ai! *FileNotFound*." );
+    }
+
+    public static void exemploUnchecked() { // compila e da problema na execução
+        throw new RuntimeException( "Deu ruim! RuntimeException." );
+    }
+}
+```
+
+## HIERARQUIA DAS EXCEPTIONS
+
+![img.png](img.png)
