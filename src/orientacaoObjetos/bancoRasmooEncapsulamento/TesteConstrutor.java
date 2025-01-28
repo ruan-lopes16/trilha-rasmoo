@@ -1,7 +1,5 @@
 package orientacaoObjetos.bancoRasmooEncapsulamento;
 
-import java.util.concurrent.ConcurrentLinkedDeque;
-
 public class TesteConstrutor {
     public static void main(String[] args) {
         Cliente ruan = new Cliente("Ruan", "12345678901");      // instanciando Cliente com parametros
