@@ -1,4 +1,4 @@
-package arrays;
+package arrays.test;
 
 public class TesteArray {
     public static void main(String[] args) {
@@ -7,7 +7,9 @@ public class TesteArray {
         double[] precos = new double[3];
 
         // atribuindo valores ao array
+        // ultimo índice do array = tam. dele - 1
         precos[0] = 4999.9;     // primeira posição
+        precos[2] = 3999.9;     // ultima posição
 
         System.out.println("Conteúdo 1° posição do ARRAY: " + precos[0]);      // acessando primeira posição
 
