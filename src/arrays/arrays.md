@@ -74,3 +74,34 @@ Ao tentar acessar atributos de uma posição NÃO existente no array, me estoura
 ```java
 System.out.println(produtos[10].getNome());
 ```
+---
+
+## ARRAYLIST
+Classe para se trabalhar com array através de métodos e comportamentos que facilitam o dia-a-dia, sendo dinâmico.
+Criando um `ArrayList` através do método `main`:
+
+```java
+import java.util.ArrayList;
+
+ArrayList lista = new ArrayList();
+```
+Obs.: Por ser uma Classe de pacote pertencente ao Java(java.util), precisa-se importá-la
+
+#### ACESSANDO REFERÊNCIAS
+```java
+// lista.add(int index)
+
+System.out.println( lista.get(0) ); // me retorna apenas a refeência em memória da 1° posição
+```
+
+Obs.: Para acessar os métodos de Produto, como `getNome()` e `getPreco()` precisamos fazer um casting("descer" hierarquia para ter acesso aos métodos de Produto)
+_**.get(); nos retorna um Object(super Classe) por isso é necessário fazer o casting**_
+
+```java
+Produto celular = (Produto) lista.get(0);
+
+// COM ISSO CONSIGO ACESSAR NOME E PRECO
+
+System.out.println(celular.getNome());
+System.out.println(celular.getPreco());
+```
