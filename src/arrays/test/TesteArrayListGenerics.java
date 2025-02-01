@@ -23,13 +23,27 @@ public class TesteArrayListGenerics {
         lista.add(p3);
 
         // acessando REFERENCIAS
-        // lista.get(int index)
-        System.out.println( lista.get(0) ); // arrays.model.Produto@6acbcfc0 - primeira posição
+        System.out.println( lista.get(0) ); // lista.get(int index) // arrays.model.Produto@6acbcfc0 - primeira posição
 
         Produto celular = lista.get(0);
         // exibindo nome e preço
         System.out.println(celular.getNome());
         System.out.println(celular.getPreco());
+
+        // remover registro
+        lista.remove(2);    // lista.remove(int index); // do indice 2 (3° posição)
+
+        // tamanho do ArrayList
+        System.out.println( "Tamanho do Array: " + lista.size() );
+
+        // remover todos os registros
+        // lista.clear(); -> tirar `//` para dar clear
+
+        // verificar se array está vazio
+        System.out.println(lista.isEmpty());
+
+        // "toString" -> ref's em memória em cada posição
+        System.out.println(lista);
 
     }
 }

@@ -117,3 +117,28 @@ ArrayList<Produto> lista = new ArrayList<>();
 Agora todos os métodos que precisarei acessar ou recuperar, já irá retornar um `Produto` e não mais um `Object`. 
 Também, agora não precisaremos mais utilizar o `casting` para acesso aos métodos de `Produto`, pois já está retornando um `Produto`.
 
+#### MÉTODOS ARRAYLIST
+- verificando tamanho do array
+```java
+System.out.println( "Tamanho do Array: " + lista.size() );
+```
+
+- removendo um elemento do array e remover tudo
+```java
+// lista.remove(int index);
+lista.remove(3); // passando indice
+
+lista.clear(); // removendo todos os elementos
+```
+
+- verificar se array está vazio
+```java
+lista.isEmpty()
+```
+
+Ao pedir para exibir, se estiver vazio tem que retornar `true`, caso contrário `false` (BOOLEAN)
+
+- verificando referências em memória
+```java
+ System.out.println(lista);
+```
