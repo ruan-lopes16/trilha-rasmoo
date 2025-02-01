@@ -105,3 +105,15 @@ Produto celular = (Produto) lista.get(0);
 System.out.println(celular.getNome());
 System.out.println(celular.getPreco());
 ```
+
+#### ARRAYLIST COM GENERICS
+Para trabalhar com Generics em ArrayList, basta colocar `<>`
+Ao criar o `ArrayList<>` eu posso especificar qualquer tipo que eu quiser dentro de `<>`
+
+```Java
+ArrayList<Produto> lista = new ArrayList<>();
+```
+
+Agora todos os métodos que precisarei acessar ou recuperar, já irá retornar um `Produto` e não mais um `Object`. 
+Também, agora não precisaremos mais utilizar o `casting` para acesso aos métodos de `Produto`, pois já está retornando um `Produto`.
+
