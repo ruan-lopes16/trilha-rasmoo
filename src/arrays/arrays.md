@@ -225,3 +225,21 @@ public class TesteArrayListEquals {
 }
 ```
 ---
+#### Ordenando com foreach
+Para apenas exibir os nomes que estão no ArrayList com foreach
+primeiro se passa o tipo, uma variável e o array, e dentro do escopo coloco os comandos
+```java
+for (String nome:nomes) { // para cada nome do array, faça -> tipo variavel: array  
+    System.out.println(nome);  
+}
+```
+
+deixando em ordem alfabética
+```java
+Collections.sort(nomes);  
+for (String nome:nomes) { // para cada nome do array, faça -> tipo variavel: array  
+    System.out.println(nome);  
+}
+```
+
+`Collections` -> classe que contém métodos estáticos(static), muito utilizado com ArrayList, por conter funcionalidades que ajudam em algumas coisas quando querendo trabalhar com coleções de dados
