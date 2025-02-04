@@ -142,3 +142,86 @@ Ao pedir para exibir, se estiver vazio tem que retornar `true`, caso contrário 
 ```java
  System.out.println(lista);
 ```
+
+#### EQUALS (critério de igualdade)
+Um método da super classe Object (precisa sobreescrever @Override)
+Utilizado para ver se um objeto é igual ao outro (ref. de memória)
+```java
+@Override
+public boolean equals(Object ref) { // recebe um objeto como parâmetro, com a intenção de comparar se o objeto atual é igual ao que foi passado.
+
+        Produto produto = (Produto) ref; // cast
+
+        if (this.nome != produto.getNome()) {
+        // se o nome for diferente do nome q estamos passamos como parametro...
+            return false;
+        } else {
+            return true;
+        }
+```
+
+- verificando se o que passamos como parâmetro, existe no ArrayList
+```java
+lista.contains(parametro);
+```
+
+- verificando qual o índice do objeto que passaremos como parâmetro
+```java
+lista.indexOf(parametro)
+```
+Obs.: caso não exista, irá retornar -1
+
+`indexOf()` e `contains()`
+Utilizam o mesmo critério de igualdade `equals`
+
+```java
+package arrays.test;
+
+import arrays.model.Produto;
+
+import java.util.ArrayList;
+
+public class TesteArrayListEquals {
+    public static void main(String[] args) {
+        // inicializando um ArrayList de Produto(generics)
+        ArrayList<Produto> lista = new ArrayList();
+
+        // criando produtos
+        Produto p1 = new Produto( "Celular", 1999.9 );
+        Produto p2 = new Produto( "Geladeira", 2499 );
+        Produto p3 = new Produto( "Notebook", 3000);
+        Produto p4 = new Produto( "Notebook", 3000);
+
+        // adicionando valores a um ArrayList - lista
+        lista.add(p1); // 0
+        lista.add(p2); // 1
+        lista.add(p3); // 2
+        // p4 não foi adicionado
+
+        System.out.println(lista.contains(p4)); // true (equals por tras dos panos)
+        // método booleano q verifica se o que passamos como parametro, existe no ArrayList
+
+        System.out.println(lista.indexOf(p4)); // 2 (equals por tras dos panos)
+        // me retorna a posição do objeto passado -> caso não exista retorna -1
+
+        System.out.println("Ref p3: " + p3);
+        System.out.println("Ref p4: " + p4);
+        // mesmos atributos, porém alocações em memória são diferentes, pois cada um é um objeto
+
+        if (p3 == p4) {
+            System.out.println("São iguais");
+        } else {
+            System.out.println("São diferentes"); //
+        }
+
+        // equals
+        if (p3.equals(p4) ) {
+            System.out.println("São iguais"); //
+        } else {
+            System.out.println("São diferentes");
+        }
+
+    }
+}
+```
+---
