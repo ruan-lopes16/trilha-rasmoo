@@ -2,7 +2,7 @@ package arrays.model;
 
 import java.util.Objects;
 
-public class Produto {
+public class Produto implements Comparable<Produto> { // Comparando produtos da classe Produto
     // atributos
     private String nome;
     private double preco;
@@ -34,5 +34,11 @@ public class Produto {
         } else {
             return true;
         }
+    }
+
+    // sobreescrevendo método de Comparable<>
+    @Override
+    public int compareTo(Produto outroProduto) {
+        return this.nome.compareTo(outroProduto.getNome());     // comparando NOME dos Produtos criados
     }
 }
