@@ -16,7 +16,7 @@ public static void printTypeAndValue(Object obj) {
         case String s -> String.format("String: %s", s);
         case Integer i -> String.format("Integer: %d", i);
         default -> "Unknown type";
-    }
+    };
     System.out.println(message);
 }
 // main
