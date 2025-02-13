@@ -9,8 +9,20 @@ public class Exercicio02 {
     - circulo: π(raio x raio)
      */
 
-    public static double calculateArea(Shape shape){
-        return 0.0;
+    public static double calculateArea(Shape shape) {
+
+        return switch (shape) {
+            case Square s -> Math.pow(s.side(), 2); // s.side() * s.side();
+            case Triangle t -> (t.base() * t.height()) / 2;
+            case Rectangle r when r.width() == r.height() -> {
+                System.err.println("O meu retângulo é um quadrado!");
+                yield Math.pow(r.width(), 2);   // yield == return -> return Math.pow(r.width(), 2);
+            }
+            case Rectangle r -> r.width() * r.height();
+            case Circle c -> 3.14 * Math.pow(c.radius(), 2);
+            default -> throw new IllegalArgumentException("Forma desconhecida");
+        };
+
     }
 
     public static void main(String[] args) {
@@ -23,6 +35,7 @@ public class Exercicio02 {
         System.out.println("Área do Círculo: " + calculateArea(circulo));
         System.out.println("Área do Quadrado: " + calculateArea(quadrado));
         System.out.println("Área do Retângulo: " + calculateArea(retangulo));
+        System.out.println("Área do Retângulo: " + calculateArea(retanguloQuadrado));
         System.out.println("Área do Triângulo: " + calculateArea(triangulo));
     }
 }
