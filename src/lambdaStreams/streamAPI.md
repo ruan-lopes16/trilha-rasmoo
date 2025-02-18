@@ -11,7 +11,7 @@ var filteredNames = names.stream()  // `names` não é alterada
 	.map(String:::toUpperCase)  // Convertendo para letras maiúsculas
 	.collect(Collector.toList());  // Coletando o resultado em uma nova lista
 
-System.out.println(filteredNames);  // [Ruan]
+System.out.println(filteredNames);  // [RUAN]
 ```
 
 ## Características da Streams API
