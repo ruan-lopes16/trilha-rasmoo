@@ -6,7 +6,7 @@ var names = Array.asList("Ruan", "Patrick", "Hyan", "Daniel", "Johnny", "Carlos"
 
 // Usando a Strem API para transformar, filtrar e coletar resultados
 var limitedFilteredNames = name.stream()
-	.filter(name -> name.contains("a")) // Filtrando nomes que possuem a letra 'a'
+	.filter(name -> names.contains("a")) // Filtrando nomes que possuem a letra 'a'
 	.map(String::toUpperCase)           // Convertendo para letras maiusculas
 	.sorted()                           // Ordenando os nomes por ordem alfabética
 	.limit(4)                           // Limitando aos 4 primeiros nomes
