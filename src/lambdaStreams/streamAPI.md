@@ -18,7 +18,7 @@ System.out.println(filteredNames);  // [RUAN]
 As principais características são:
 
 - **Operações de Alta Ordem**: Suporta operações que podem receber outras funções como argumentos ou retornar funções como resultado. Ex.: `map`, `filter` e `reduce`.
-- **Imultabilidade**: As operações de stream não alteram os dados originais. Elas produzem novos streams, permitindo uma programação imutável.
+- **Imutabilidade**: As operações de stream não alteram os dados originais. Elas produzem novos streams, permitindo uma programação imutável.
 - **Sem efeitos colaterais**: As funções aplicadas nas streams devem ser puras. O resultado depende apenas de seus valores de entrada e não devem alterar o estado do programa ou interagir com o mundo externo.
 - **Expressividade e Composição**: Permite a composição de operações complexas de forma conscisa, legível e de fácil entendimento.
 - **Avaliação Preguiçosa**: As operações intermediárias são avaliadas somente quando uma operação terminal é invocada, melhorando a eficiência ao evitar cálculos desnecessários.
