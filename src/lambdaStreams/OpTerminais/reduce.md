@@ -8,7 +8,7 @@ Essa operação pode ser usada das seguintes formas:
 ```java
 var numbers = Arrays.asList(1, 2, 3, 4, 5);
 
-var result = numbers.stream().reduce((n1, n2) -> n1 * n2);
+var result = numbers.stream().reduce((n1, n2) -> n1 * n2); // recebe como argumento uma função acumuladora
 
 System.out.println(result) // Optional[120]
 ```
@@ -16,9 +16,9 @@ Obs.: Esta forma retorna um Optional, pois a stream pode estar vazia.
 
     - Com valor inicial:
 ```java
-var numbers = = Arrays.asList(1, 2, 3, 4, 5);
+var numbers = Arrays.asList(1, 2, 3, 4, 5);
 
-var result = numbers.stream().reduce(1000, Integer::sum);
+var result = numbers.stream().reduce(1000, Integer::sum); // dois argumento, com valor inicial (começa com 1000) e logo depois a função
 
 System.out.println(result); // 1015
 ```
