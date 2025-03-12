@@ -107,3 +107,83 @@ _Obs.: Posso colocar qualquer tipo de informação que o banco irá aceitar_
 --------------------------------------------------------------------------------------------------------------------
 |    Exemplos   |      Oracle, MySQL, PostgreeSQL     |                 MongoDB, DynamoDB, Redis                   |
 --------------------------------------------------------------------------------------------------------------------
+
+# TABELAS E TIPOS DE DADOS
+As tabelas são objetos que possuem todas as informações em um banco de dados. Nelas, os dados são organizados de forma lógica em um conjunto de linhas e colunas. 
+Cada linha representa um registro e cada coluna representa um campo desse registro.
+
+Cada coluna é representada por um tipo de dado que deverá constar na tabela. Dentre os tipos de dados, existem os numéricos, textos, datas, entre outros. 
+
+Contudo, a tabela é como se fosse uma planilha e o conjunto de várias delas, formam a base de dados.
+
+-------------------------------------------------------------
+| ID |    CPF    |      NOME      |  TELEFONE  | NASCIMENTO |
+-------------------------------------------------------------
+| 1  | 111111111 |   RUAN SANTOS  | 3499999991 | 2003-03-16 |
+-------------------------------------------------------------
+| 2  | 222222222 | PATRICK MACIEL | 3499999992 | 1986-10-14 |
+-------------------------------------------------------------
+| 3  | 333333333 | HYAN RODRIGUES | 3499999993 | 2001-05-15 |
+-------------------------------------------------------------
+| 4  | 444444444 |  JOHNNY SILVA  | 3499999994 | 2003-08-10 |
+-------------------------------------------------------------
+
+------------------------------------------
+| ID |    NOME    |  PRECO  |  CADASTRO  |
+------------------------------------------
+| 1  |  TV SMART  | 1999.90 | 2024-03-16 |
+------------------------------------------
+| 2  | SMARTPHONE | 4999.90 | 2024-10-14 |
+------------------------------------------
+
+## TIPOS DE DADOS
+Existem diversos tipos de dados que podem ser úteis para atender determinadas situações. Porém, os tipos mais utilizados são:
+Numéricos:
+- INT
+- BIGINT
+- BOOL
+- FLOAT
+- DOUBLE
+- DECIMAL
+
+Textos:
+- CHAR
+- VARCHAR
+- TEXT
+- ENUM
+
+Datas:
+- DATE
+- DATETIME
+- TIMESTAMP
+- TIME
+- YEAR
+
+# MER
+## Modelo Entidade e Relacionamento
+
+O Modelo Entidade e Relacionamento, também chamado de MER, são diagramas utilizados para representar, de forma abstrata, a estrutura de um banco de dados. 
+Normalmente descrevem os objetos da nossa realidade através de entidades, contendo propriedades que são os atributos e os seus devidos relacionamentos.
+
+- Entidades
+Representam objetos da nossa realidade, possuem uma existência independente e normalmente são representadas nominalmente por substantivos. 
+- Contudo, é possível dizer que Pessoas, Produtos, Departamentos, Empresas e Escolas, são exemplos de entidades.
+
+- Atributos
+Descrevem as propriedades das entidades, são as características que cada entidade possui dentro de um determinado domínio. 
+- A entidade pessoa por exemplo, possui um nome, e-mail, data de nascimento, estado civil, endereço, entre outros.
+
+- Relacionamentos
+Descreve o relacionamento entre as entidades e normalmente são representados por verbos. Por exemplo, entre as entidades escola e aluno, é possível dizer que “uma escola possui vários alunos”. 
+Dessa forma, de acordo com cada tipo de relacionamento, podemos classifica-los em três tipos:
+
+  - Um para Um (1..1) 
+    Uma entidade X se associa unicamente a uma outra entidade Y.
+
+  - Um para Muitos (1..N)
+    Uma entidade X pode referenciar a várias ocorrências de uma entidade Y. Porém, essa entidade Y pode apenas referenciar uma única ocorrência da entidade X.
+
+  - Muitos para Muitos (N..N)
+    A entidade X pode referenciar diversas ocorrências da entidade Y e a entidade Y pode também se referenciar a várias ocorrências da entidade X.
+
+_Obs.: Exemplo de **MER** feito em **MySQL Workbench 8.0 CE**_
