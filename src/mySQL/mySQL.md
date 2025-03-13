@@ -187,3 +187,351 @@ Dessa forma, de acordo com cada tipo de relacionamento, podemos classifica-los e
     A entidade X pode referenciar diversas ocorrências da entidade Y e a entidade Y pode também se referenciar a várias ocorrências da entidade X.
 
 _Obs.: Exemplo de **MER** feito em **MySQL Workbench 8.0 CE**_
+
+# CRIANDO O BANCO DE DADOS
+A sintaxe de criação de um banco de dados é bem simples e intuitiva e se você tiver um pouco de conhecimento da língua inglesa fica mais fácil ainda de entender.
+`CREATE DATABASE rasmoo_plus;`
+
+Depois de criado, é necessário informar ao MySQL que ele será utilizado.
+`USE rasmoo_plus;`
+
+Feito isso, o banco de dados está criado e pronto para uso. Agora está faltando somente criar as tabelas.
+
+# CRIANDO AS TABELAS
+Para criar uma tabela basta utilizar o comando CREATE TABLE e colocar em prática tudo aquilo que foi aprendido sobre tipos de dados.
+`
+CREATE DATABASE rasmoo_plus;
+
+USE rasmoo_plus;
+
+CREATE TABLE user_type(
+  id INT PRIMARY KEY AUTO_INCREMENT,
+  name VARCHAR(100) NOT NULL UNIQUE,
+  description TEXT
+);
+
+CREATE TABLE users(
+  id INT PRIMARY KEY AUTO_INCREMENT,
+  name VARCHAR(100) NOT NULL,
+  email VARCHAR(150) NOT NULL UNIQUE,
+  phone VARCHAR(13) NOT NULL,
+  cpf VARCHAR(11) NOT NULL UNIQUE,
+  user_type_id INT NOT NULL,
+  FOREIGN KEY(user_type_id) REFERENCES user_type(id)
+);
+
+CREATE TABLE subscription_type(
+  id INT PRIMARY KEY AUTO_INCREMENT,
+  name VARCHAR(100) NOT NULL UNIQUE,
+  access_days INT NOT NULL,
+  description TEXT
+);
+
+CREATE TABLE subscriptions(
+  id INT PRIMARY KEY AUTO_INCREMENT,
+  dt_subscription DATE NOT NULL,
+  user_id INT NOT NULL UNIQUE,
+  subscription_type_id INT NOT NULL,
+  FOREIGN KEY(user_id) REFERENCES users(id),
+  FOREIGN KEY(subscription_type_id) REFERENCES subscription_type(id)
+);
+
+CREATE TABLE courses(
+  id INT PRIMARY KEY AUTO_INCREMENT,
+  name VARCHAR(120) NOT NULL,
+  description TEXT,
+  certificate_hours DOUBLE NOT NULL,
+  dt_creation DATE NOT NULL
+);
+
+CREATE TABLE subscription_course(
+  id INT PRIMARY KEY AUTO_INCREMENT,
+  subscription_id INT NOT NULL,
+  course_id INT NOT NULL,
+  FOREIGN KEY(subscription_id) REFERENCES subscriptions(id),
+  FOREIGN KEY(course_id) REFERENCES courses(id)
+);
+
+SHOW TABLES;
+`
+
+# MANIPULANDO DADOS
+## INSERINDO REGISTROS
+A sintaxe de inserção de novos registros em uma tabela é bem simples, basta seguir o modelo abaixo:
+`INSERT INTO nome_da_tabela VALUES(valor1, valor2, ..., valorN);`
+`INSERT INTO nome_da_tabela(campo1, ..., campoN) VALUES(valor1, ..., valorN);`
+
+Agora que você já aprendeu a sintaxe básica de como inserir novos registros no banco de dados, está na hora de praticar um pouco.
+
+Para esse treinamento, crie diversas querys para popular as tabelas do nosso banco de dados.
+1° método de inserção de valores
+// como não usei a 'referencia', preciso escrever o que cada coluna tem
+`INSERT INTO user_type VALUES(null, 'ALUNO', null);`
+`INSERT INTO user_type VALUES(null, 'PROFESSOR', null);`
+`INSERT INTO user_type VALUES(null, 'ADMINISTRADOR', null);`
+
+2° método de inserção de valores
+// passando apenas para as colunas name e access_day o resto pertence como está
+`INSERT INTO subscription_type(name, access_days) VALUES ('Java Path', 120);`
+`INSERT INTO subscription_type (name, access_days) VALUES('Javascript Path', 60);`
+`INSERT INTO subscription_type (name, access_days) VALUES('Full Stack Path', 90);`
+
+// inserir várias linhas em uma tabela em um único comando
+// posso declarar ou não as colunas que quero inserir as novas informações
+```
+INSERT INTO users (name, email, phone, cpf, user_type_id) VALUES`
+  ('Ana Luisa', 'analuisa@gmail.com', '5521999999901', '11122233301', 1),
+  ('Vanessa', 'vanessa@gmail.com', '5521999999902', '11122233302', 1),
+  ('Marcos', 'marcos@gmail.com', '5521999999903', '11122233303', 1), 
+  ('Yuri', 'yuri@gmail.com', '5521999999906', '11122233306', 1), 
+  ('Matheus', 'matheus@gmail.com', '5521999999907', '11122233307', I), 
+  ('Mario', 'mario@gmail.com', '5521999999908', '11122233308', 1), 
+  ('Larissa', 'larissa@gmail.com', '5521999999909', '11122233309', 1), 
+  ('Vinicios', 'vinicios@gmail.com', '5521999999910' '11122233310', 1)
+  ('Patricia', 'patricia@gmail.com' , '5521999999911', '11122233311', 1) ,
+  ('Mauricio', 'mauricio@gmail.com' , '5521999999912, '11122233312', 1),
+  ('Pedro Henrique', 'pedro@gmail.com', '5521999999904', '11122233304', 2), 
+  ('Felipe', 'felipe@gmail.com', '5521999999905', '11122233305', 3);
+```
+
+## ALTERANDO REGISTROS
+Para alterar algum registro, basta utilizar o comando `UPDATE` seguido do nome da tabela, apontar os campos que serão atualizados e informar para qual registro que será alterado.
+```
+UPDATE nome_da_tabela
+  SET campo1 = valor1,
+      campo2 = valor2,
+      ...,
+      campoN = valorN
+WHERE campoX = ?;
+```
+Agora que você já aprendeu a sintaxe básica de como alterar os registros no banco de dados, está na fora de praticar um pouco.
+Para esse treinamento, crie algumas querys com o objetivo de atualizar os seguintes registros que foram inseridos de forma errada.
+
+```
+INSERT INTO courses (name, certificate_hours, dt_creation) VALUES
+('HTTP Protocol', 10, CURDATE()), 
+('MyySQqL', 18, CURDATE()),
+('Java Bsic', 20, CURDATE()),
+('Java Advanced', 40, CURDATE()), 
+('Sping B0ot', 100, CURDATE()), 
+('Spring Data JPA', 25, CURDATE()) , 
+('Spring Security', 30, CURDATE()), 
+('Angular Advanced', 50, CURDATE()) ,
+('Build your backend with NodeJS', 30, CURDATE()), 
+('Applications with NextJS', 40, CURDATE());
+
+UPDATE courses SET name = 'MySQL' WHERE id = 2;
+UPDATE courses SET name = 'Java Basic' WHERE name = 'Java Bsic';
+UPDATE courses SET name = 'Spring Boot' WHERE name="Sping B0ot';
+```
+
+## EXCLUINDO REGISTROS
+Agora que você já aprendeu a inserir e alterar registros em uma tabela, está na hora de saber deletar um registro também. A sintaxe de deleção é bem simples.
+```
+DELETE FROM nome_da_tabela;
+DELETE FROM nome_da_tabela WHERE condição;
+```
+
+Agora que você já aprendeu a sintaxe básica de como deletar os registros no banco de dados, está na hora de praticar um pouco.
+Para esse treinamento, faça uma instrução SQL que:
+  a) Delete o usuário que possui o id de número 7.
+      `DELETE FROM users WHERE id = 7;`
+  b) Delete todos os usuários que comecem com as letras "Ma".
+      `DELETE FROM users WHERE name LIKE 'Ma%';`
+
+# ESTRUTURA BÁSICA DE UMA CONSULTA
+Vamos começar aprendendo a estrutura básica de uma consulta
+`SELECT * FROM nome_da_tabela;`
+`SELECT * FROM nome_da_tabela WHERE condicao;`
+`SELECT coluna1, coluna2, ..., colunaN FROM nome_da_tabela;`
+`SELECT coluna1, coluna2, ..., colunaN FROM nome_da_tabela;`
+Agora que você já aprendeu a estrutura básica de uma consulta, está na hora de praticar um pouco.
+Para esse treinamento, faça uma instrução SQL que:
+  a) Retorne todos os dados do usuário que se chama Pedro Henrique.
+  --------------------------------------------------------------------------------------
+  | id |      name      |      email      |     phone     |     cpf     | user_type_id |
+  --------------------------------------------------------------------------------------
+  | 11 | Pedro Henrique | pedro@gmail.com | 5521999999904 | 11122233304 |      2       |
+  --------------------------------------------------------------------------------------
+
+  b) Retorne os nomes de todos os usuários que possuam a coluna “user_type_id” igual a 1.
+  `SELECT name FROM users WHERE user_type_id = 1;`
+  -------------
+  | name      |
+  | Ana Luisa |
+  | Vanessa   |
+  | Yuri      |
+  | Vinicios  |
+  | Patricia  |
+  -------------
+
+# SUBCONSULTA OU SUBQUERY
+Uma subquery ou subconsulta, é instrução SQL dentro de outra instrução SQL, ou seja, é basicamente uma consulta embutida dentro de outra consulta.
+Dessa forma, ela funciona passando os resultados da consulta mais interna para a consulta mais externa através de uma condição.
+Além disso, também é possível utilizar subconsulta em operações como INSERT, UPDATE e DELETE.
+
+```
+SELECT 
+  coluna1,
+  ...,
+  colunaN
+FROM nome_da_tabela WHERE condicao (
+  SELECT coluna FROM nome_da_tabela [WHERE condicao]
+);
+```
+
+```
+INSERT INTO nome_da_tabela(coluna1, ... colunaN) (
+  SELECT coluna1, ..., colunaN FROM nome_da_tabela [WHERE condicao]
+);
+
+UPDATE nome_da_tabela
+  SET coluna1 = valor1,
+      coluna2 = valor3,
+      ...,
+      colunaN = valorN
+WHERE condicao (
+  SELECT coluna FROM nome_da_tabela [WHERE condicao]
+);
+
+DELETE FROM nome_da_tabela WHERE condicao (
+  SELECT coluna FROM nome_da_tabela [WHERE condicao]
+);
+```
+
+Agora que você já aprendeu a estrutura básica de uma subconsulta, está na hora de praticar um pouco.​
+Para esse treinamento, faça uma instrução SQL que:
+
+a) Retorne todos os usuários que possuam uma assinatura
+  `SELECT * FROM users WHERE id IN (SELECT user_id FROM subscriptions);`
+
+-------------------------------------------------------------------------------------
+| id | name      | email               | phone         | cpf         | user_type_id |
+-------------------------------------------------------------------------------------
+| 1  | Ana Luisa | analuisa@gmail.com  | 5521999999901 | 11122233301 | 1            |
+-------------------------------------------------------------------------------------
+| 2  | Vanessa   | vanessagmail.com    | 5521999999902 | 11122233302 | 1            |
+-------------------------------------------------------------------------------------
+| 4  | Yuri      | yuri@gmail.com      | 5521999999906 | 11122233306 | 1            |
+-------------------------------------------------------------------------------------
+| 8  | Vinicios  | vinicios@gmail.com  | 5521999999910 | 11122233310 | 1            |
+-------------------------------------------------------------------------------------
+| 9  | Patricia  | patricia@gmail.com  | 5521999999911 | 11122233311 | 1            |
+--------------------------------------------------------------------------------------
+
+b) Retorne todos os usuários que sejam do tipo ”ADMINISTRADOR”.
+ `SELECT * FROM users WHERE user_type_id = (
+    SELECT id FROM user_type WHERE name = 'ADMINISTRADOR'
+ );`
+
+-----------------------------------------------------------------------------------
+| id | name      | email             | phone         | cpf         | user_type_id |
+-----------------------------------------------------------------------------------
+| 12 | Felipe    | felipe@gmail.com  | 5521999999905 | 11122233305 | 3            |
+-----------------------------------------------------------------------------------
+
+c) Delete todos os usuários que sejam do tipo ”PROFESSOR”.
+ `DELECT FROM users WHERE user_type_id = (
+    SELECT id FROM user_type WHERE name = 'PROFESSOR'
+ );`
+
+-------------------------------------------------------------------------------------
+| id | name      | email               | phone         | cpf         | user_type_id |
+-------------------------------------------------------------------------------------
+| 1  | Ana Luisa | analuisa@gmail.com  | 5521999999901 | 11122233301 | 1            |
+-------------------------------------------------------------------------------------
+
+d) Salve em uma outra tabela as informações “name”, “email”, “phone”, “cpf” e “user_type_id” de todos os usuários cadastrados na tabela “users”.
+ `INSERT INTO users_bkp(name, email, phone, cpf, user_type_id) (
+    SELECT name, email, phone, cpf, user_type_id FROM users
+ );
+ SELECT * FROM users_bkp;`
+
+# COMBINANDO TABELAS
+A cláusula JOIN é usada para combinar dados provenientes de duas ou mais tabelas do banco de dados, baseado em um relacionamento entre colunas destas tabelas.
+
+INNER JOIN: Retorna registros que possuem valores relacionados nas duas tabelas.
+LEFT JOIN: Retorna todos os registros da tabela da esquerda e os registros relacionados da tabela da direita.
+RIGHT JOIN: Retorna todos os registros da tabela da direita e os registros relacionados da tabela da esquerda.
+
+`SELECT coluna1, ..., colunaN
+  FROM nome_da_tabela alias1
+  (INNER, LEFT, RIGHT) JOIN nome_da_tabela alias2
+ ON alias1.colunaX = alias2.colunaX;`
+
+Agora que você já aprendeu a estrutura básica da cláusula JOIN, está na hora de praticar um pouco.
+Para esse treinamento, faça uma instrução SQL que:
+  a) Retorne o nome e o tipo de todos os usuários
+  `SELECT u.name, ut.name AS type FROM users u
+      INNER JOIN user_type ut ON ut.id = u.user_type_id;`
+
+  -----------------------------
+  | name      | type          |
+  -----------------------------
+  | Ana Luisa | ALUNO         |
+  -----------------------------
+  | Vanessa   |  ALUNO        |
+  -----------------------------
+  | Yuri      | ALUNO         |
+  -----------------------------
+  | Vinicios  | ALUNO         |
+  -----------------------------
+  | Patricia  | ALUNO         |
+  -----------------------------
+  | Felipe    | ADMINISTRADOR |
+  -----------------------------
+
+ b) Retorne todos os usuários que possuam uma assinatura
+ `SELECT u.* FROM users u
+      INNER JOIN subscriptions s ON u.id = s.user_id;`
+ 
+-------------------------------------------------------------------------------------
+| id | name      | email               | phone         | cpf         | user_type_id |
+-------------------------------------------------------------------------------------
+| 1  | Ana Luisa | analuisa@gmail.com  | 5521999999901 | 11122233301 | 1            |
+-------------------------------------------------------------------------------------
+| 2  | Vanessa   | vanessagmail.com    | 5521999999902 | 11122233302 | 1            |
+-------------------------------------------------------------------------------------
+| 4  | Yuri      | yuri@gmail.com      | 5521999999906 | 11122233306 | 1            |
+-------------------------------------------------------------------------------------
+| 8  | Vinicios  | vinicios@gmail.com  | 5521999999910 | 11122233310 | 1            |
+-------------------------------------------------------------------------------------
+| 9  | Patricia  | patricia@gmail.com  | 5521999999911 | 11122233311 | 1            |
+-------------------------------------------------------------------------------------
+
+ c) Retorne o nome, cpf, o tipo e a data de assinatura de todos os usuários que possuam uma assinatura.
+ `SELECT u.name, u.cpf, st.name AS type, s.dt_subcription FROM users u
+      INNER JOIN subscriptions s ON u.id = s.user_id
+      INNER JOIN subscription_type st ON s.subscription_type_id = st.id;`
+ 
+---------------------------------------------------------------
+| name      | cpf         | type            | dt_subscription |
+---------------------------------------------------------------
+| Ana Luisa | 11122233301 | Full Stack Path | 2022-02-05      |
+---------------------------------------------------------------
+| Vanessa   | 11122233302 | Full Stack Path | 2022-02-05      |
+---------------------------------------------------------------
+| Yuri      | 11122233306 | Java Path       | 2022-02-05      |
+---------------------------------------------------------------
+| Vinicios  | 11122233310 | Java Path       | 2022-02-05      |
+---------------------------------------------------------------
+| Patricia  | 11122233311 | Javascript Path | 2022-02-05      |
+---------------------------------------------------------------
+
+ d) Retorne todos os dados dos usuários e sua respectiva data de assinatura. Caso o usuário não possua uma assinaturam a query deverá retorna _NULL_ na coluna "dt_subscription"
+ `SELECT u.*, s.dt_subscription FROM users u
+      LEFT JOIN subscriptions s ON u.id = s.user_id;`
+ 
+-------------------------------------------------------------------------------------------------------
+| id | name      | email               | phone         | cpf         | user_type_id | dt_subscription |
+-------------------------------------------------------------------------------------------------------
+| 1  | Ana Luisa | analuisa@gmail.com  | 5521999999901 | 11122233301 | 1            | 2022-02-05      |
+-------------------------------------------------------------------------------------------------------
+| 2  | Vanessa   | vanessagmail.com    | 5521999999902 | 11122233302 | 1            | 2022-02-05      |
+-------------------------------------------------------------------------------------------------------
+| 4  | Yuri      | yuri@gmail.com      | 5521999999906 | 11122233306 | 1            | 2022-02-05      |
+-------------------------------------------------------------------------------------------------------
+| 8  | Vinicios  | vinicios@gmail.com  | 5521999999910 | 11122233310 | 1            | 2022-02-05      |
+-------------------------------------------------------------------------------------------------------
+| 9  | Patricia  | patricia@gmail.com  | 5521999999911 | 11122233311 | 1            | (NULL)          |
+-------------------------------------------------------------------------------------------------------
