@@ -147,10 +147,10 @@ Numéricos:
 - DECIMAL
 
 Textos:
-- CHAR
-- VARCHAR
+- CHAR      // um caracter
+- VARCHAR   // conjunto de caracteres
 - TEXT
-- ENUM
+- ENUM     // define o valor que a coluna pode ter
 
 Datas:
 - DATE
