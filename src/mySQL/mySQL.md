@@ -279,17 +279,17 @@ Para esse treinamento, crie diversas querys para popular as tabelas do nosso ban
 // inserir várias linhas em uma tabela em um único comando
 // posso declarar ou não as colunas que quero inserir as novas informações
 ```
-INSERT INTO users (name, email, phone, cpf, user_type_id) VALUES`
+INSERT INTO users (name, email, phone, cpf, user_type_id) VALUES
   ('Ana Luisa', 'analuisa@gmail.com', '5521999999901', '11122233301', 1),
   ('Vanessa', 'vanessa@gmail.com', '5521999999902', '11122233302', 1),
   ('Marcos', 'marcos@gmail.com', '5521999999903', '11122233303', 1), 
   ('Yuri', 'yuri@gmail.com', '5521999999906', '11122233306', 1), 
-  ('Matheus', 'matheus@gmail.com', '5521999999907', '11122233307', I), 
+  ('Matheus', 'matheus@gmail.com', '5521999999907', '11122233307', 1), 
   ('Mario', 'mario@gmail.com', '5521999999908', '11122233308', 1), 
   ('Larissa', 'larissa@gmail.com', '5521999999909', '11122233309', 1), 
-  ('Vinicios', 'vinicios@gmail.com', '5521999999910' '11122233310', 1)
-  ('Patricia', 'patricia@gmail.com' , '5521999999911', '11122233311', 1) ,
-  ('Mauricio', 'mauricio@gmail.com' , '5521999999912, '11122233312', 1),
+  ('Vinicios', 'vinicios@gmail.com', '5521999999910', '11122233310', 1),
+  ('Patricia', 'patricia@gmail.com' , '5521999999911', '11122233311', 1),
+  ('Mauricio', 'mauricio@gmail.com' , '5521999999912', '11122233312', 1),
   ('Pedro Henrique', 'pedro@gmail.com', '5521999999904', '11122233304', 2), 
   ('Felipe', 'felipe@gmail.com', '5521999999905', '11122233305', 3);
 ```
@@ -322,7 +322,7 @@ INSERT INTO courses (name, certificate_hours, dt_creation) VALUES
 
 UPDATE courses SET name = 'MySQL' WHERE id = 2;
 UPDATE courses SET name = 'Java Basic' WHERE name = 'Java Bsic';
-UPDATE courses SET name = 'Spring Boot' WHERE name="Sping B0ot';
+UPDATE courses SET name = 'Spring Boot' WHERE name = 'Sping B0ot';
 ```
 
 ## EXCLUINDO REGISTROS
@@ -348,6 +348,7 @@ Vamos começar aprendendo a estrutura básica de uma consulta
 Agora que você já aprendeu a estrutura básica de uma consulta, está na hora de praticar um pouco.
 Para esse treinamento, faça uma instrução SQL que:
   a) Retorne todos os dados do usuário que se chama Pedro Henrique.
+  `SELECT * FROM users WHERE name = 'Pedro Henrique';`
   --------------------------------------------------------------------------------------
   | id |      name      |      email      |     phone     |     cpf     | user_type_id |
   --------------------------------------------------------------------------------------
@@ -431,7 +432,7 @@ b) Retorne todos os usuários que sejam do tipo ”ADMINISTRADOR”.
 -----------------------------------------------------------------------------------
 
 c) Delete todos os usuários que sejam do tipo ”PROFESSOR”.
- `DELECT FROM users WHERE user_type_id = (
+ `DELETE FROM users WHERE user_type_id = (
     SELECT id FROM user_type WHERE name = 'PROFESSOR'
  );`
 
