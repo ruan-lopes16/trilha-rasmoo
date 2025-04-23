@@ -1,0 +1,64 @@
+# JPA HIBERNATE e SPRING DATA
+---
+# JPA Hibernate
+
+## JDBC
+- Conjunto de classes/Biblioteca que facilitam o acesso ao banco de dados(Jav Database Connectivity), utilizando JAVA, independente da tecnologia de persistência (tecnologias relacionais)
+- Especificação para que seja possível acessar banco de dados relacionais no JAVA de forma abstrata
+- Surgimento do DAO(Data acess Object) - isola as configurações do JDBC em um único pacote
+`CONTROLER/SERVICE -> CLASSES DAO -> BANCO DE DADOS`
+
+Ex.: invocando classe DAO
+```java
+public class CadastrarCursoService {
+    private CursoDao cursoDao;
+    
+    public CadastroProdutoService(CursoDao cursoDao){
+        this.cursoDao = cursoDao;
+    }
+    
+    public void cadastrarCurso(Curso curso){
+        this.cursoDao.salvar(curso)
+    }
+}
+```
+
+por dentro da classe DAO
+```java
+import java.sql.Connection;
+import java.sql.PreparedStatement;
+
+public class CursoDao {
+    private Connection connection;
+
+    public CursoDao(Connection connection) {
+        this.connection = connection;
+
+    }
+
+    public void salvar(Curso curso) {
+        try {
+            String query = "INSERT INTO curso(nome, descricao, horas) VALUES(?,?,?)";
+
+            PreparedStatement ps - this.connection.prepareStatement(query);
+            ps.setString(1, curso.getNome());
+            ps.setString(2, curso.getDescricao());
+            ps.setInt(3, curso.getHoras());
+            
+            ps.execute();
+            ps.close();
+        } catch (Exception e) {
+            throw new RuntimeException("Erro ao salvar o curso", e);
+        }
+    }
+}
+```
+
+## JPA
+- Alternativa ao JDBC e EJB2
+- Mantida pela RedHat
+- Projeto engessados por limitação de biblioteca
+- padrão ORM(Object Relational Mapping) - mapeamento entre o mundo real e a POO
+- logo em seguida, JPA (Java Persistence APO - 2006) como especificação
+
+- Agora não precisa mais importar as clases de outras tecnologias como: Hibernate, OpenJPA ou EclipseLink, basta importar o JPA e as classes irão implementar os métodos do JPA
