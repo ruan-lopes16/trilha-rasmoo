@@ -1,4 +1,5 @@
 # JPA HIBERNATE e SPRING DATA
+💻 **[Projeto Rasfood](https://github.com/ruan-lopes16/rasfood/tree/master)**
 ---
 # JPA Hibernate
 
@@ -78,8 +79,9 @@ xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xs
 </project> 
 ```
 
+## DEPENDÊNCIAS
 - Inicialmente precisamos instalar as dependências de banco e hibernate
-```
+```xml
 <dependencies>
         <!-- https://mvnrepository.com/artifact/org.hibernate/hibernate-entitymanager --> <!-- HIBERNATE -->
         <dependency>
@@ -100,7 +102,7 @@ xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xs
 
 - Para nosso projeto inicialmente, isso já basta
 _ARQUIVO POM COMPLETO_
-```
+```xml
 <?xml version="1.0" encoding="UTF-8"?>
 <project xmlns="http://maven.apache.org/POM/4.0.0"
          xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
@@ -139,3 +141,29 @@ _ARQUIVO POM COMPLETO_
 ```
 
 **NOTA-SE que as `dependencies` estão antes das `properties`, e sempre que adicionar novas dependências devem ser colocadas dentro de `dependencies`**
+
+## ENTIDADES
+- Cria-se um arquivo chamado `persistence.xml` para configuração de database - indicar qual tipo iremos usar, credênciais, dialeto e etc.
+- Caminho "padrão":
+    📁 src
+      └── 📁 main
+        └── 📁 resources
+            └── 📁 META-INF
+                └── 📄 persistence.xml
+
+```xml
+<?xml version="1.0" encoding="UTF-8"?>
+<persistence version="2.2"
+             xmlns="http://xmlns.jcp.org/xml/ns/persistence" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+             xsi:schemaLocation="http://xmlns.jcp.org/xml/ns/persistence http://xmlns.jcp.org/xml/ns/persistence/persistence_2_2.xsd">
+    <persistence-unit name="rasFood" transaction-type="RESOURCE_LOCAL">
+        <properties>
+            <property name="javax.persistence.jdbc.driver" value="org.h2.Driver"/> <!-- driver jdbc/banco de dados que iremos usar -->
+            <property name="javax.persistence.jdbc.url" value="jdbc:h2:mem:rasfood"/> <!-- url de banco -> nesse caso url em memória -->
+            <property name="javax.persistence.jdbc.user" value="rasmoo"/> <!-- usuário -->
+            <property name="javax.persistence.jdbc.password" value=""/> <!-- senha -->
+            <property name="hibernate.dialect" value="org.hibernate.dialect.H2Dialect"/> <!-- dialeto da tecnologia sql que está usando --> (palavras-chave)
+        </properties>
+    </persistence-unit>
+</persistence>
+```
