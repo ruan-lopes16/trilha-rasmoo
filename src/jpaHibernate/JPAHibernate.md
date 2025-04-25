@@ -202,7 +202,7 @@ public class Classe {
 		`Table()` -> dentro de parenteses podemos escolher os parametros
 			- Define o **nome da tabela no banco de dados**.
 		    - Se você não usar, o nome da tabela será o nome da classe.
-		![](Pasted%20image%2020250425163240.png)
+		![img.png](img.png)
 		- para nossa tabela será: `@Table(name = "pratos")`
 
 ✅ `@Id`
@@ -378,3 +378,85 @@ public class Prato {
     }  
 }
 ```
+
+## 🔄 Ciclo de Vida de uma Entidade no JPA
+
+As entidades no JPA passam por **quatro estados principais** ao longo do seu ciclo de vida:
+
+> `transient → managed → detached → removed`
+### 💡 Exemplo: Instanciando a classe `Prato`
+
+```java
+Prato prato = new Prato();  
+// setters omitidos  
+EntityManager entityManager = JPAUtil.getEntityManager(); entityManager.getTransaction().begin(); entityManager.getTransaction().commit(); 
+entityManager.close();
+```
+
+---
+### 🧠 EntityManager
+É o **coração do JPA** — o gerenciador de entidades.  
+É por meio dele que realizamos ações como:
+
+- Iniciar e fechar transações
+- Persistir objetos no banco
+- Atualizar registros
+
+OBS.: Ao iniciarmos nossas transações lidamos com métodos CRUD -> criar, consultar, atualizar e remover (verá mais a frente)
+
+---
+### 1️⃣ TRANSIENT — Estado inicial
+📌 Ocorre **assim que instanciamos** uma entidade:
+
+- Ela ainda **não foi persistida**
+- Não possui `id`
+- **Não é gerenciada/monitorada** pela JPA
+
+```java
+Prato prato = new Prato(); // estado: TRANSIENT
+```
+
+Neste ponto, a entidade ainda **não tem vínculo com o banco**.
+
+### 2️⃣ MANAGED — Entidade gerenciada pela JPA
+📌 Ocorre quando chamamos:
+
+```java
+entityManager.persist(prato);
+```
+
+Agora:
+- A JPA **atribui um `id`**
+- A entidade passa a ser **monitorada**
+- Consegue fazer consultas e atualizar o banco
+- Qualquer alteração será sincronizada com o banco ao usar `commit()` ou `flush()`
+- `commit()` - final de uma transação -> não consegue dar rollback/defazer sincronização com o banco
+- `flush()` - consegue executar diversos flush durante a transação e consegue dar rollback, caso desista da sincronização
+
+✅ Transição para **MANAGED**
+
+---
+### 🔄 Transições a partir de MANAGED:
+
+|Método|Ação|
+|---|---|
+|`close()`|Fecha a transação e "desliga" o gerenciamento da entidade|
+|`clear()`|Limpa o contexto de persistência, removendo a entidade do controle|
+
+---
+### 3️⃣ DETACHED — Entidade desligada
+📌 Acontece após `close()` ou `clear()`:
+- A entidade **continua existindo com `id`**, pois já foi persistida
+- Mas agora está **fora do controle da JPA**
+- **Não há mais sincronismo** automático com o banco de dados
+
+```java
+entityManager.close(); // estado: DETACHED
+```
+
+> ⚠️ Diferente do `transient`, o `detached` já foi persistido — ele só não é mais gerenciado.
+![img_1.png](img_1.png)
+
+### 4️⃣ REMOVED
+📌 Exclui a entidade através do método `remove()`
+![img_2.png](img_2.png)
