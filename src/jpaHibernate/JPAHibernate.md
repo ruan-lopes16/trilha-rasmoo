@@ -482,8 +482,8 @@ update
 🔹 Cria e atualiza tabelas automaticamente.
 🔹 Não exclui dados existentes.
 🔹 Ao reiniciar o serviço, apenas adiciona mudanças necessárias.
-create	🔹
-Cria tabelas e colunas.
+create	
+🔹 Cria tabelas e colunas.
 🔹 Apaga tudo ao reiniciar o serviço.
 🔹 Dados não são preservados entre sessões.
 create-drop	
