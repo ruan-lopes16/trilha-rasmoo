@@ -478,9 +478,23 @@ Para acompanhar as queries (consultas) geradas pelo JPA e monitorar o desempenho
 🔧 Opções de `hibernate.hbm2ddl.auto`
 Essa propriedade determina como o JPA gerencia as tabelas do banco automaticamente, sem necessidade de scripts manuais.
 
-*Valor -> Comportamento*
-- update -> Atualiza o banco sem apagar dados. Se derrubar e subir o serviço, adiciona apenas o que estiver faltando. (Mais seguro para desenvolvimento)
-- create -> Cria as tabelas toda vez que o serviço inicia, apagando tudo o que havia anteriormente.
-- create-drop -> Cria as tabelas ao iniciar o serviço e as apaga automaticamente ao encerrar.
-- validate -> Apenas valida se as tabelas estão corretas, sem alterar nada no banco. Útil para verificar a estrutura em produção.
+update	
+🔹 Cria e atualiza tabelas automaticamente.
+🔹 Não exclui dados existentes.
+🔹 Ao reiniciar o serviço, apenas adiciona mudanças necessárias.
+create	🔹
+Cria tabelas e colunas.
+🔹 Apaga tudo ao reiniciar o serviço.
+🔹 Dados não são preservados entre sessões.
+create-drop	
+🔹 Cria tabelas ao iniciar.
+🔹 Exclui as tabelas assim que o serviço é desligado.
+validate	
+🔹 Valida se as tabelas existentes estão corretas.
+🔹 Não cria nem modifica tabelas, apenas verifica.
+
+💡 Resumo:
+update: Mais seguro para desenvolvimento — mantém dados.
+create e create-drop: Usados para testes rápidos.
+validate: Para garantir que o banco já está corretamente estruturado.
 
