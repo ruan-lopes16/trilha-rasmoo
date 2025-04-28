@@ -460,3 +460,27 @@ entityManager.close(); // estado: DETACHED
 ### 4️⃣ REMOVED
 📌 Exclui a entidade através do método `remove()`
 ![img_2.png](img_2.png)
+
+---
+📜 Visualização de Logs no JPA
+Para acompanhar as queries (consultas) geradas pelo JPA e monitorar o desempenho da aplicação, configuramos o arquivo `persistence.xml`
+
+🛠 Dentro da tag <properties>::
+```java
+    <property name="hibernate.show_sql" value="true"/> <!-- Exibe no log as queries SQL geradas -->
+    <property name="hibernate.hbm2ddl.auto" value="update"/> <!-- Define como o JPA deve gerenciar o schema (tabelas) - persistir, consultar dados -->
+```
+
+📊 Observação Importante:
+- Como o H2 Database é um banco de dados temporário (em memória),
+➔ Sempre que o serviço é encerrado, todos os dados persistidos são perdidos.
+
+🔧 Opções de `hibernate.hbm2ddl.auto`
+Essa propriedade determina como o JPA gerencia as tabelas do banco automaticamente, sem necessidade de scripts manuais.
+
+*Valor -> Comportamento*
+- update -> Atualiza o banco sem apagar dados. Se derrubar e subir o serviço, adiciona apenas o que estiver faltando. (Mais seguro para desenvolvimento)
+- create -> Cria as tabelas toda vez que o serviço inicia, apagando tudo o que havia anteriormente.
+- create-drop -> Cria as tabelas ao iniciar o serviço e as apaga automaticamente ao encerrar.
+- validate -> Apenas valida se as tabelas estão corretas, sem alterar nada no banco. Útil para verificar a estrutura em produção.
+
