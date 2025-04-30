@@ -1,4 +1,4 @@
-# trilha-rasmoo
+# trilha-rasmoo   <img src="https://memberkit-cdn.imgix.net/3dwtqftuy21xfvwrdqo1of8lghzn?q=90" width="50" height="50"/>
 Este repositório faz parte da trilha de aprendizado da plataforma Rasmoo, com o objetivo de aplicar e consolidar conhecimentos adquiridos ao longo do curso.​
 
 ## 📚 Conteúdo
