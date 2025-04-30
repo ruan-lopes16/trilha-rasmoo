@@ -571,4 +571,280 @@ public class PratoService {
 | `close()`              | Desanexa a entidade (`DETACHED`).                                                                |
 | `Persistence` (classe) | Classe utilitária da JPA que **lê o arquivo `persistence.xml`** e cria a `EntityManagerFactory`. |
 
+---
+# JPAUtil e padrão DAO
+Ao trabalhar com JPA, é comum usar os objetos `EntityManager` e `EntityManagerFactory` em várias classes. Para **evitar repetição de código** e **organizar melhor a arquitetura**, usamos duas boas práticas:
 
+1. **Classe utilitária (`JPAUtil`)** para isolar a criação do `EntityManager`
+2. **Padrão de projeto DAO (Data Access Object)** para isolar a lógica de persistência.
+
+---
+
+## 📁 1. Classe `JPAUtil` — Centralizando o acesso ao banco
+
+
+
+```java
+package br.com.rasmoo.restaurante.util;  
+import javax.persistence.EntityManager; 
+import javax.persistence.EntityManagerFactory; 
+import javax.persistence.Persistence;  
+
+public class JPAUtil {     
+	// Criando uma única instância da Factory (padrão Singleton) >>> RASFOOD > conforme persistence.xml "rasFood"
+	private static final EntityManagerFactory RASFOOD = Persistence.createEntityManagerFactory("rasFood");  
+	    
+	// Método que entrega um novo EntityManager     
+	public static EntityManager getEntityManagerRasFood() {         
+		return RASFOOD.createEntityManager();     
+	} 
+}
+```
+
+### ✅ Explicação
+
+- **`RASFOOD`**: é a fábrica (`EntityManagerFactory`) criada apenas uma vez (Singleton).
+- **`getEntityManagerRasFood()`**: retorna um `EntityManager` novo sempre que for chamado.
+- Evitamos duplicar a criação da factory, que é **custosa** e deve ser feita **apenas uma vez**.
+
+
+---
+
+## 🧱 2. Classe `PratoDao` — Aplicando o padrão DAO
+
+```java
+package br.com.rasmoo.restaurante.dao;  
+import br.com.rasmoo.restaurante.entity.Prato; 
+import javax.persistence.EntityManager;  
+
+public class PratoDao {     
+	private EntityManager entityManager;   
+	   
+	public PratoDao(EntityManager entityManager) {         
+		this.entityManager = entityManager;     
+	}      
+	
+	public void cadastrar(Prato prato) {         
+		this.entityManager.persist(prato);         
+		System.out.println("Entidade cadastrada: " + prato);     
+	} 
+}
+```
+
+### ✅ Explicação
+
+- Essa classe representa o **acesso aos dados da entidade `Prato`**.
+- O método `cadastrar()` cuida de **persistir** (salvar) um objeto no banco.
+- O DAO é responsável apenas pelas **operações com o banco**, deixando a regra de negócio separada.
+- Ele será usado em todos os métodos do DAO para persistir, buscar, atualizar ou remover objetos do banco.
+
+
+---
+
+## 🚀 3. Classe `PratoService` — Executando a lógica com o DAO
+
+java
+
+CopiarEditar
+
+```java
+package br.com.rasmoo.restaurante.service.teste;  
+import br.com.rasmoo.restaurante.dao.PratoDao; 
+import br.com.rasmoo.restaurante.entity.Prato; 
+import br.com.rasmoo.restaurante.util.JPAUtil;  
+import javax.persistence.EntityManager; 
+import java.math.BigDecimal;  
+
+public class PratoService {     
+public static void main(String[] args) {   
+
+// 1. Criando o objeto Prato (estado NEW)         
+	Prato risoto = new Prato();         
+	risoto.setNome("Risoto de frutos do mar");         
+	risoto.setDescricao("Risoto acompanhado de lula, polvo e mariscos");        
+	risoto.isDisponivel(true);         
+	risoto.setValor(BigDecimal.valueOf(88.50));         
+// A data de registro é automática         
+
+// 2. Obtendo EntityManager através do JPAUtil         
+	EntityManager entityManager = JPAUtil.getEntityManagerRasFood();          
+// 3. Criando o DAO e iniciando transação         
+	PratoDao pratoDao = new PratoDao(entityManager);         
+	entityManager.getTransaction().begin();          
+
+// 4. Persistindo o prato (estado MANAGED)         
+	pratoDao.cadastrar(risoto);          
+
+// 5. Finalizando a transação (commit)         
+	entityManager.getTransaction().commit();          
+
+// 6. Fechando o EntityManager (estado DETACHED)         
+	entityManager.close();     
+	} 
+}
+```
+## 🧠 Vantagens dessa arquitetura
+
+| Item            | Benefício                                                    |
+| --------------- | ------------------------------------------------------------ |
+| 🔁 `JPAUtil`    | Evita repetição de código para criar `EntityManager`         |
+| 🧱 `DAO`        | Isola a lógica de acesso ao banco                            |
+| 📦 `Service`    | Foca apenas na regra de negócio (organização em camadas)     |
+| 🧼 Código limpo | Cada classe tem uma única responsabilidade (princípio SOLID) |
+
+---
+DESTRINCHANDO:
+## ✅ Classe `JPAUtil`
+
+### Finalidade:
+Centralizar a criação do `EntityManager` usando o padrão Singleton + Factory. Isso **evita repetição de código** e melhora a manutenção do projeto.
+
+`public class JPAUtil {`
+- Estamos declarando uma classe pública chamada `JPAUtil`.
+- `Util` significa que é uma classe utilitária, ou seja, **oferece métodos auxiliares** que outras classes podem usar.
+
+```java
+private static final EntityManagerFactory RASFOOD = Persistence.createEntityManagerFactory("rasFood");
+```
+
+- Aqui temos um atributo chamado `RASFOOD`:
+    - `private`: só acessível dentro da classe.
+    - `static`: pertence à classe, não precisa de instância para ser acessado.
+    - `final`: o valor não muda depois de ser criado.
+
+- `EntityManagerFactory`: objeto pesado que **cria** EntityManagers.
+
+- `Persistence.createEntityManagerFactory("rasFood")`: chama o método da JPA que **lê o arquivo `persistence.xml`** e procura a `persistence-unit` com nome `"rasFood"`.
+    - Esse nome precisa bater com o `<persistence-unit name="rasFood">` do seu XML.
+
+
+🔁 **Padrão de Projeto usado aqui:**
+- **Factory**: cria objetos para você.
+- **Singleton**: só cria uma única instância do factory.
+
+```java
+public static EntityManager getEntityManagerRasFood() {         
+	return RASFOOD.createEntityManager();     
+}
+```
+
+- Método **estático**, então pode ser chamado assim: `JPAUtil.getEntityManagerRasFood()`.
+- Ele usa a `RASFOOD` (a fábrica) para **gerar um novo `EntityManager`**.
+- Toda vez que precisar interagir com o banco, você chama esse método.
+
+---
+## ✅ Classe `PratoDao`
+
+### Finalidade:
+Aplicar o padrão DAO (Data Access Object), que **organiza e separa o acesso ao banco de dados da lógica de negócio**.
+
+`public class PratoDao {`
+- Criamos uma classe pública chamada `PratoDao`. Ela será responsável por tudo relacionado ao banco de dados da entidade `Prato`.
+
+```java
+private EntityManager entityManager;
+```
+- Criamos um campo privado que vai armazenar o `EntityManager`.
+
+- Cada instância do `PratoDao` vai usar esse `EntityManager` para executar operações.
+
+```java
+public PratoDao(EntityManager entityManager) {         
+	this.entityManager = entityManager;     
+}```
+- Construtor da classe.
+
+- Quando você cria um `PratoDao`, você **obriga** a passar um `EntityManager` (injeção manual de dependência).
+
+```java
+public void cadastrar(Prato prato) {         
+	this.entityManager.persist(prato);         
+	System.out.println("Entidade cadastrada: " + prato);     
+}
+```
+- Método público `cadastrar()` que recebe um `Prato` como argumento.
+- Usa o `entityManager` para persistir (salvar) o objeto.
+- Exibe no console que o prato foi cadastrado, para facilitar o debug.
+
+---
+
+## ✅ Classe `PratoService`
+### Finalidade:
+Simula a camada de serviço, onde a lógica principal da aplicação acontece. Aqui você **usa os objetos DAO e utilitários** para realizar as ações.
+
+---
+
+### 🔹 Parte 1 – Criando um novo objeto
+`Prato risoto = new Prato();`
+- Criamos um novo objeto da classe `Prato`.
+- Neste momento ele está em memória e **não tem vínculo com o banco** ainda.
+- Estado da JPA: `NEW`.
+
+```java
+risoto.setNome("Risoto de frutos do mar");         
+risoto.setDescricao("Risoto acompanhado de lula, polvo e mariscos");         
+risoto.setDisponivel(true);         
+risoto.setValor(BigDecimal.valueOf(88.50));
+```
+- Preenchendo os campos do objeto.
+- `setDisponivel(true)` define que o prato está disponível.
+- `setValor(...)` usa `BigDecimal`, que é a forma correta de representar dinheiro no Java (evita erros de arredondamento).
+
+---
+### 🔹 Parte 2 – Preparando a persistência com JPA
+`EntityManager entityManager = JPAUtil.getEntityManagerRasFood();`
+- Usamos o utilitário que criamos (`JPAUtil`) para obter um `EntityManager`.
+- Agora estamos prontos para conversar com o banco.
+
+`PratoDao pratoDao = new PratoDao(entityManager);`
+- Criamos um DAO para gerenciar a persistência de `Prato`.
+- Passamos o `EntityManager` para ele usar nos métodos (como `cadastrar()`).
+
+---
+### 🔹 Parte 3 – Persistindo com segurança
+`entityManager.getTransaction().begin();`
+- Começamos uma transação JPA.
+- JPA exige que você comece uma transação antes de fazer alterações no banco (como persistência, atualização, etc).
+
+`pratoDao.cadastrar(risoto);`
+- Usamos o DAO para salvar o prato no banco.
+- Neste momento a JPA muda o estado do objeto para `MANAGED`.
+
+`entityManager.getTransaction().commit();`
+- Finalizamos a transação e confirmamos tudo o que foi feito.
+- O `commit()` salva efetivamente os dados no banco.
+
+`entityManager.close();`
+- Fechamos o `EntityManager`.
+- O objeto agora está no estado `DETACHED` (desconectado da JPA).
+
+---
+## 🔄 Ciclo de Vida da Entidade (JPA)
+
+| Estado     | Quando acontece                        | Descrição                                   |
+| ---------- | -------------------------------------- | ------------------------------------------- |
+| `NEW`      | `new Prato()`                          | Criado em memória, ainda não está no banco. |
+| `MANAGED`  | `entityManager.persist(prato)`         | Agora está sendo "controlado" pela JPA.     |
+| `DETACHED` | `entityManager.close()` ou após commit | Está salvo no banco, mas fora da JPA.       |
+| `REMOVED`  | `entityManager.remove(prato)`          | Está marcado para ser excluído.             |
+
+Para acompanhar as **queries** (consultas) geradas pelo JPA e monitorar o **desempenho** da aplicação, configuramos o arquivo `persistence.xml`.
+
+🛠 Dentro da tag `<properties>`:
+```java  
+    <property name="hibernate.show_sql" value="true"/> <!-- Exibe no log as queries SQL geradas -->    
+    <property name="hibernate.hbm2ddl.auto" value="update"/> <!-- Define como o JPA deve gerenciar o schema (tabelas) - persistir, consultar dados -->  
+```
+
+📊 Observação Importante:
+- Como o H2 Database é um banco de dados temporário (em memória),  
+  ➔ Sempre que o serviço é encerrado, todos os dados persistidos são perdidos.
+
+🔧 Opções de `hibernate.hbm2ddl.auto`  
+Essa propriedade determina como o JPA gerencia as tabelas do banco automaticamente, sem necessidade de scripts manuais.
+
+*Valor -> Comportamento*
+- update -> Atualiza o banco sem apagar dados. Se derrubar e subir o serviço, adiciona apenas o que estiver faltando. (Mais seguro para desenvolvimento)
+- create -> Cria as tabelas toda vez que o serviço inicia, apagando tudo o que havia anteriormente.
+- create-drop -> Cria as tabelas ao iniciar o serviço e as apaga automaticamente ao encerrar.
+- validate -> Apenas valida se as tabelas estão corretas, sem alterar nada no banco. Útil para verificar a estrutura em produção.
