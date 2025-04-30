@@ -643,10 +643,6 @@ public class PratoDao {
 
 ## 🚀 3. Classe `PratoService` — Executando a lógica com o DAO
 
-java
-
-CopiarEditar
-
 ```java
 package br.com.rasmoo.restaurante.service.teste;  
 import br.com.rasmoo.restaurante.dao.PratoDao; 
