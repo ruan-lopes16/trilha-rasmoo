@@ -560,5 +560,15 @@ public class PratoService {
     }  
 }
 ```
+### 🧠 Conceitos Importantes:
+
+| Conceito               | Explicação                                                                                       |
+| ---------------------- | ------------------------------------------------------------------------------------------------ |
+| `EntityManagerFactory` | Cria `EntityManager`s, implementa o padrão de projeto _Factory_.                                 |
+| `EntityManager`        | Gerencia o ciclo de vida das entidades (`TRANSIENT`, `MANAGED`, `DETACHED`).                     |
+| `persist()`            | Salva o objeto na base de dados (estado `MANAGED`).                                              |
+| `commit()`             | Finaliza e sincroniza a transação com o banco.                                                   |
+| `close()`              | Desanexa a entidade (`DETACHED`).                                                                |
+| `Persistence` (classe) | Classe utilitária da JPA que **lê o arquivo `persistence.xml`** e cria a `EntityManagerFactory`. |
 
 
