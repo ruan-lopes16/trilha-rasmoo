@@ -844,3 +844,102 @@ Essa propriedade determina como o JPA gerencia as tabelas do banco automaticamen
 - create -> Cria as tabelas toda vez que o serviço inicia, apagando tudo o que havia anteriormente.
 - create-drop -> Cria as tabelas ao iniciar o serviço e as apaga automaticamente ao encerrar.
 - validate -> Apenas valida se as tabelas estão corretas, sem alterar nada no banco. Útil para verificar a estrutura em produção.
+
+---
+# 🪛 Implementação CRUD na classe DAO
+C = CREATE
+R = READ
+U = UPDATE
+D = DELETE
+
+---
+
+## 🔵 CREATE: `cadastrar()`
+```java
+public void cadastrar(final Prato prato){     
+	this.entityManager.persist(prato);     
+	System.out.println("Entidade cadastrada: " + prato); 
+}
+```
+
+### Explicação:
+
+- `public void cadastrar(...)`:  
+  Um método público que **não retorna nada** (`void`) e recebe um objeto do tipo `Prato`.
+
+- `this.entityManager.persist(prato);`:  
+  Esse comando **diz para o Hibernate armazenar o objeto `prato` no banco de dados**.  
+  ✅ Requisitos:
+    - O objeto deve estar no estado **"transient"** (ainda não persistido).
+    - Após o `persist()`, o objeto entra no estado **"managed"**, ou seja, está sendo monitorado pelo Hibernate.
+
+---
+
+## 🔵 READ: `consultar()`
+
+```java
+public Prato consultar(final Integer id){     
+	return this.entityManager.find(Prato.class, id); 
+	}
+```
+
+### Explicação:
+- `public Prato consultar(...)`:  
+  Um método que **retorna um objeto `Prato`** e recebe um `id` como argumento.
+
+- `this.entityManager.find(Prato.class, id);`:  
+  Essa linha **procura no banco de dados um objeto da classe `Prato` com o ID fornecido**.
+
+
+✅ O método `find`:
+- Recebe dois argumentos: a classe da entidade (`Prato.class`) e o valor da chave primária (`id`)
+
+- Retorna:
+    - O objeto correspondente (se encontrado)
+    - `null` se não encontrar
+---
+
+## 🔵 UPDATE: `atualizar()`
+
+```java
+public void atualizar(final Prato prato){     
+	this.entityManager.merge(prato);     
+	System.out.println("Entidade atualizada: " + prato); 
+}
+```
+
+### Explicação:
+- `public void atualizar(...)`:  
+    Método que atualiza os dados de um `Prato`. Ele **não retorna nada**.
+    
+- `this.entityManager.merge(prato);`:  
+    Esse método serve para **atualizar um objeto que já existe no banco**.  
+    Mas ele também pode ser usado para:
+    
+    - **"reativar" um objeto que estava no estado "detached"** (fora do controle do Hibernate).
+    - Criar um **novo objeto gerenciado**, com os dados do objeto que você passou.
+
+⚠️ Importante:
+- O objeto original (`prato`) **não é atualizado diretamente**, mas o `merge` retorna uma nova instância **gerenciada**.
+- Você **deve usar o valor retornado por `merge`** se quiser continuar trabalhando com o objeto dentro do contexto da JPA.
+
+---
+
+## 🔵 DELETE: `excluir()`
+
+```java
+public void excluir(final Prato prato){     
+	this.entityManager.remove(prato);     
+	System.out.println("Entidade removida: " + prato); 
+}
+```
+
+### Explicação:
+- `public void excluir(...)`:  
+    Método que remove um objeto do tipo `Prato`.
+    
+- `this.entityManager.remove(prato);`:  
+    Esse comando **exclui o objeto do banco de dados**.  
+    ⚠️ Requisitos:
+    - O objeto **precisa estar no estado "managed"**.
+    - Se estiver "detached", o `remove()` lançará uma exceção.
