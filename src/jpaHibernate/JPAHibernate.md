@@ -943,3 +943,9 @@ public void excluir(final Prato prato){
     ⚠️ Requisitos:
     - O objeto **precisa estar no estado "managed"**.
     - Se estiver "detached", o `remove()` lançará uma exceção.
+
+### Testandos métodos DAO
+![Teste de métodos DAO](testeDAO.png)
+![Resultado dos métodos DAO](resultadoDAO.png)
+
+
