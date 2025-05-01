@@ -949,3 +949,11 @@ public void excluir(final Prato prato){
 ![Resultado dos métodos DAO](resultadoDAO.png)
 
 
+FOI FEITO UMA REFATORAÇÃO NO CÓDIGO
+Onde era prato nas classes anteriores virou cardapio
+Ex.: 
+PratoDao >>> CardapioDao
+Prato >>> Cardapio
+PratoService >>> CardapioService
+
+
