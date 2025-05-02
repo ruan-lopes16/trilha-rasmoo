@@ -956,4 +956,245 @@ PratoDao >>> CardapioDao
 Prato >>> Cardapio
 PratoService >>> CardapioService
 
+---
 
+# 📚 Tipos de Relacionamentos em JPA
+
+## 1. `@OneToOne` – Um para Um
+### 📖 Definição:
+> Uma entidade está relacionada com exatamente uma outra entidade.
+
+### 💡 Exemplo:
+- Uma pessoa tem um único passaporte.
+- Um passaporte pertence a uma única pessoa.
+
+### 🧩 Código:
+
+```java
+@Entity 
+public class Pessoa {     
+	@Id     
+	private Long id;      
+	@OneToOne     
+	private Passaporte passaporte; 
+}```
+
+```java
+@Entity 
+public class Passaporte {     
+	@Id     
+	private Long id;      
+	@OneToOne(mappedBy = "passaporte") // lado inverso     
+	private Pessoa pessoa; 
+}
+```
+
+---
+
+## 2. `@OneToMany` – Um para Muitos
+### 📖 Definição:
+> Uma entidade pode estar relacionada com várias instâncias de outra entidade.
+### 💡 Exemplo:
+- Um cliente faz vários pedidos.
+- Um pedido pertence a um único cliente.
+
+### 🧩 Código:
+
+```java
+@Entity 
+	public class Cliente {     
+	@Id     private Long id;      
+	@OneToMany(mappedBy = "cliente")     
+	private List<Pedido> pedidos; }
+```
+
+```java
+@Entity 
+public class Pedido {     
+	@Id     
+	private Long id;      
+	@ManyToOne     
+	private Cliente cliente; 
+}
+```
+
+---
+
+## 3. `@ManyToOne` – Muitos para Um
+### 📖 Definição:
+> Muitas instâncias de uma entidade estão relacionadas a uma única instância de outra.
+
+### 💡 Exemplo:
+- Vários livros podem ter o mesmo autor.
+- Um livro tem apenas um autor.
+
+### 🧩 Código:
+```java
+@Entity 
+public class Livro {     
+	@Id     
+	private Long id;      
+	@ManyToOne     
+	private Autor autor; 
+}
+```
+
+```java
+@Entity 
+public class Autor {     
+	@Id     
+	private Long id;      
+	@OneToMany(mappedBy = "autor")     
+	private List<Livro> livros; 
+}
+```
+
+---
+
+## 4. `@ManyToMany` – Muitos para Muitos
+### 📖 Definição:
+> Muitas instâncias de uma entidade estão relacionadas a muitas de outra entidade.
+
+### 💡 Exemplo:
+- Um aluno pode estar matriculado em várias disciplinas.
+- Uma disciplina pode ter vários alunos.
+
+### 🧩 Código:
+
+
+```java 
+@Entity 
+public class Aluno {     
+	@Id     
+	private Long id;      
+	@ManyToMany     
+	private List<Disciplina> disciplinas; 
+}
+```
+
+
+```java
+@Entity 
+public class Disciplina {
+	@Id     
+	private Long id;      
+	@ManyToMany(mappedBy = "disciplinas")     
+	private List<Aluno> alunos; 
+}
+```
+
+---
+
+# 🏗️ Tabela de Referência
+
+|Tipo|Anotação|Exemplo|Tabela com FK|
+|---|---|---|---|
+|Um para Um|`@OneToOne`|Pessoa → Passaporte|Depende de quem for dono|
+|Um para Muitos|`@OneToMany`|Cliente → Pedidos|Pedidos tem FK cliente|
+|Muitos para Um|`@ManyToOne`|Pedido → Cliente|Pedidos tem FK cliente|
+|Muitos a Muitos|`@ManyToMany`|Aluno ↔ Disciplinas|Tabela intermediária|
+
+---
+
+# 🔍 Extras Importantes
+
+### `@JoinColumn`
+
+Define a coluna da **chave estrangeira** (FK).
+
+```java
+@ManyToOne 
+@JoinColumn(name = "autor_id") 
+private Autor autor;
+```
+
+### `@JoinTable`
+
+Usado em `@ManyToMany` para definir a **tabela intermediária**.
+
+```java
+@ManyToMany 
+@JoinTable(
+	name = "aluno_disciplina",     
+		joinColumns = @JoinColumn(name = "aluno_id"),
+		inverseJoinColumns = @JoinColumn(name = "disciplina_id") 
+	) 
+	private List<Disciplina> disciplinas;
+```
+
+---
+
+# 🧪 Testando na prática
+
+Você pode criar um banco H2 e colocar os dados com `data.sql`, ou usar um `CommandLineRunner` para carregar objetos e salvar no banco para ver os relacionamentos funcionando.
+
+---
+# 🧩 O que é o `mappedBy`?
+
+## 📖 Definição simples:
+
+> Atributo `mappedBy` **indica qual lado do relacionamento "possui" a relação no banco de dados**.  
+> Ele é usado no **lado inverso** do relacionamento para dizer:  
+> 👉 "Ei, quem realmente cuida da foreign key é aquele outro lado."
+
+---
+
+## 🧠 Analogia para facilitar:
+
+Imagine dois objetos: **Cliente** e **Pedido**.  
+Um cliente pode fazer vários pedidos (`@OneToMany`), e um pedido pertence a um único cliente (`@ManyToOne`).
+
+Quem **possui a chave estrangeira no banco?**  
+➡ O `Pedido`! Porque a tabela `pedido` vai ter uma coluna chamada `cliente_id`.
+
+### ✍️ Código:
+
+
+```java
+@Entity 
+public class Cliente {
+	@Id     
+	private Long id;      
+	@OneToMany(mappedBy = "cliente")  // cliente é o nome do atributo na classe Pedido     
+	private List<Pedido> pedidos; 
+}
+```
+
+
+```java
+@Entity 
+public class Pedido {
+	@Id     
+	private Long id;      
+	@ManyToOne     
+	@JoinColumn(name = "cliente_id") // essa é a coluna no banco     
+	private Cliente cliente; 
+}
+```
+
+---
+
+## 🔍 O que o `mappedBy = "cliente"` quer dizer?
+
+> “Olha, **eu (Cliente)** estou no lado **inverso** da relação.  
+> Quem **controla a foreign key no banco** é o campo `cliente` da entidade `Pedido`.”
+
+Sem o `mappedBy`, o JPA **cria duas tabelas de ligação desnecessárias** ou uma coluna extra — ele não entende quem realmente "manda" na relação.
+
+---
+
+## ⚠️ Quando usar `mappedBy`?
+
+- Sempre que você estiver fazendo o **lado inverso** da relação:
+    - Em `@OneToMany` (lado 1) → `mappedBy` aponta para o campo com `@ManyToOne`.
+
+    - Em `@OneToOne` (lado 1) → `mappedBy` aponta para o campo com `@OneToOne`.
+
+    - Em `@ManyToMany` (lado secundário) → `mappedBy` aponta para o campo que usa `@JoinTable`.
+
+---
+## ✅ Regra de ouro:
+
+- **Quem tem o `mappedBy` é o lado passivo da relação.**
+
+- **Quem tem `@JoinColumn` ou `@JoinTable` é o lado que "controla" a foreign key.**
