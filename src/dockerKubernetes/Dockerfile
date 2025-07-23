@@ -1,4 +1,4 @@
-#setar algo para rodar o node
+# Define uma imagem base, imagem para exterdermos em nossa imagem customizada
 FROM node:18-alpine3.17
 
 # Define um diretorio de trabalho. Diretorio pai/raiz
@@ -11,11 +11,11 @@ COPY package*.json ./
 
 COPY yarn.lock ./
 
-#COPY install_all_deps.sh ./
+COPY install_all_deps.sh ./
 
 # Execute comandos de terminal durante a fase de build da nossa imagem
-#RUN chmod +x install_all_deps.sh
-#RUN ./install_all_deps.sh
+RUN chmod +x install_all_deps.sh
+RUN ./install_all_deps.sh
 
 RUN npm install
 
