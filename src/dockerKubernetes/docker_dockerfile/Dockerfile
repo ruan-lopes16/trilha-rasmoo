@@ -2,7 +2,7 @@
 FROM node:18-alpine3.17
 
 # Define um diretorio de trabalho. Diretorio pai/raiz
-WORKDIR /src/dockerKubernetes/docker
+WORKDIR /src/dockerKubernetes/docker_dockerfile
 
 # Copia uma arquivo seguindo o padrao ORIGEM(maquina)  DESTINO(container)
 COPY package*.json ./
