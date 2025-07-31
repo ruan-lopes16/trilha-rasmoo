@@ -189,4 +189,18 @@ Você não precisa decorar os endereços ou as ações, o próprio site te guia.
   ]
 }
 ```
-Benefícios: Torna a API "autodescritiva". O cliente (o software que usa a API) pode descobrir as próximas ações sem ter que ter todo o conhecimento prévio da documentação. Isso aumenta a flexibilidade e a capacidade da API de evoluir sem quebrar os sistemas que a consomem.
+Benefícios: Torna a API "autodescritiva". O cliente (o software que usa a API) pode descobrir as próximas ações sem ter que ter todo o conhecimento prévio da documentação. 
+Isso aumenta a flexibilidade e a capacidade da API de evoluir sem quebrar os sistemas que a consomem.
+
+---
+
+## SPRING BOOT
+O Spring Boot é uma ferramenta para desenvolvedores Java que:
+
+**Simplifica a configuração**: Faz a maior parte do trabalho chato para você.
+
+**Torna a execução fácil**: Vem com um servidor web embutido, então você só precisa rodar o código.
+
+**Gerencia dependências**: Usa pacotes starter para garantir que as bibliotecas funcionem bem juntas.
+
+Ele é o motivo pelo qual o desenvolvimento de aplicações Java se tornou tão rápido e produtivo, permitindo que os desenvolvedores se concentrem na lógica de negócio e na criação de funcionalidades, em vez de se perderem em configurações e burocracia.
