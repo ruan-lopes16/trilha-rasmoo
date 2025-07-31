@@ -204,3 +204,110 @@ O Spring Boot é uma ferramenta para desenvolvedores Java que:
 **Gerencia dependências**: Usa pacotes starter para garantir que as bibliotecas funcionem bem juntas.
 
 Ele é o motivo pelo qual o desenvolvimento de aplicações Java se tornou tão rápido e produtivo, permitindo que os desenvolvedores se concentrem na lógica de negócio e na criação de funcionalidades, em vez de se perderem em configurações e burocracia.
+
+---
+
+## Inversão de Controle (IoC)
+A Inversão de Controle (ou IoC, do inglês Inversion of Control) é como se você contratasse uma fábrica especializada para construir o carro para você. 
+Você apenas diz: "Eu quero um carro com essas características", e a fábrica (que seria o container IoC) se encarrega de montar tudo, garantindo que as peças se encaixem perfeitamente.
+
+Em vez de seu código ser responsável por criar e gerenciar todos os seus componentes, você "inverte" esse controle, passando a responsabilidade para um "container" ou "fábrica" especializada. 
+Seu código se torna mais passivo, apenas recebendo os componentes de que precisa, em vez de criá-los ativamente.
+
+## Injeção de Dependências (DI)
+A DI é a forma prática de implementar a Inversão de Controle. É o "método de entrega" das peças.
+
+Voltando à analogia do carro, quando a fábrica (o container IoC) constrói seu carro, ela injetará as peças (o motor, as rodas, o volante) diretamente nos locais onde elas são necessárias. 
+O carro (seu código) não precisa se preocupar em ir buscar as peças; elas simplesmente aparecem lá.
+
+No mundo da programação, uma dependência é um objeto que sua classe precisa para funcionar. 
+Por exemplo, uma classe  `ServicoDePedidos` pode depender de uma classe `BancoDeDados` para salvar informações.
+
+Existem três formas principais de "injetar" (entregar) essas dependências:
+
+- **Injeção por Construtor**: A dependência é passada para a classe no momento em que ela é criada, através do seu construtor. É a forma mais comum e recomendada.
+
+- **Injeção por Propriedade (ou Setter)**: A dependência é "injetada" através de um método setter depois que a classe já foi criada.
+
+- **Injeção por Interface**: A classe implementa uma interface que define o método de injeção.
+
+### Por que isso é importante?
+
+**Menos Acoplamento**: Seu código não fica "amarrado" a outros componentes. Se você precisar trocar o banco de dados, por exemplo, basta avisar o container IoC para injetar um novo, e seu código nem precisa ser modificado.
+
+**Mais Flexibilidade**: Fica muito mais fácil de testar. Em vez de usar um banco de dados real durante os testes, o container pode injetar um "banco de dados falso" (chamado de mock) para simular o comportamento. 
+Isso torna os testes mais rápidos e confiáveis.
+
+**Código Mais Limpo**: Seu código se concentra no que realmente importa: a lógica de negócio. 
+A responsabilidade de criar e gerenciar as dependências é da fábrica (o container), não sua.
+
+## Pontos de Injeção
+*Imagine que você está construindo um robô. Esse robô precisa de uma bateria para funcionar.
+O robô não vai fabricar a própria bateria; ele tem um compartimento especial onde a bateria se encaixa. Esse compartimento é o ponto de injeção.
+No mundo da programação, um ponto de injeção é simplesmente um local no seu código onde uma dependência (como a bateria do robô) será "entregue" ou "injetada" pelo sistema de **Injeção de Dependências**.
+Em vez de sua classe criar a dependência por conta própria, ela apenas "declara" que precisa dela em um desses pontos, e o sistema se encarrega de fornecer o objeto correto.*
+
+Existem três tipos principais de pontos de injeção:
+
+1. **Injeção no Construtor**
+Pense no construtor como a "caixa de entrada" principal do seu robô. No momento em que você o monta (cria a classe), você já diz quais peças ele precisa para funcionar.
+
+**Como funciona**: A dependência é passada como um argumento para o construtor da sua classe.
+
+**Vantagem**: É a forma mais recomendada. Garante que a classe sempre terá as dependências necessárias para funcionar, pois sem elas, a classe nem pode ser criada.
+
+```Java
+// O construtor aqui é o ponto de injeção
+public class Robô {
+private Bateria bateria;
+
+    // A Bateria é injetada aqui
+    public Robô(Bateria bateria) {
+        this.bateria = bateria;
+    }
+}
+```
+
+2. **Injeção por Atributo (ou Campo)**
+Essa é como uma "entrada lateral" no seu robô. Em vez de passar a peça na hora da montagem, você tem um espaço pronto para ela, e o sistema injeta a peça diretamente lá.
+
+**Como funciona**: Você usa uma anotação (como @Autowired no Spring) em um atributo (uma variável de instância) da sua classe. O sistema de injeção de dependências encontra essa anotação e automaticamente preenche a variável.
+
+**Vantagem**: É mais simples e rápido de escrever, pois você não precisa criar um construtor ou um método setter para cada dependência.
+
+**Desvantagem**: Torna o código mais difícil de testar e pode violar alguns princípios de design.
+
+```Java
+// O atributo `bateria` é o ponto de injeção
+public class Robô {
+// A anotação @Autowired diz ao Spring para injetar a Bateria aqui
+@Autowired
+private Bateria bateria;
+}
+```
+
+3. Injeção por Método Setter
+   Pense nisso como um "método de substituição" de peças. Se o seu robô precisa de uma nova bateria, você pode usar um método específico para fazer a troca.
+
+**Como funciona**: A dependência é injetada através de um método setter (um método que define o valor de um atributo).
+
+**Vantagem**: Permite que as dependências sejam alteradas durante o tempo de execução do programa.
+
+**Desvantagem**: Similar à injeção por atributo, pode tornar a dependência opcional, o que pode levar a erros se a dependência não for injetada.
+
+```Java
+public class Robô {
+private Bateria bateria;
+
+    // O método setBateria() é o ponto de injeção
+    public void setBateria(Bateria bateria) {
+        this.bateria = bateria;
+    }
+}
+```
+**Resumindo**:
+Os pontos de injeção são os "lugares" no seu código onde você diz: "Eu preciso de um objeto aqui, por favor".
+
+Eles são a forma prática de fazer o seu código receber as dependências de que precisa, em vez de ser responsável por criá-las. Isso torna o código mais flexível, fácil de testar e menos acoplado.
+
+---
