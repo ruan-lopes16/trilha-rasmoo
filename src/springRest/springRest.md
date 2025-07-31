@@ -104,7 +104,89 @@ Isso o torna rígido, difícil de integrar, e qualquer mudança pode afetar tudo
 ---
 
 ## Maturidade de Richardson
+Usada para definir/medir o quanto uma API é "sofisticada", "bem feita" ou "aderente" aos princípios **REST**
+Essa maturidade é divida em 4 níveis(0 a 3). Cada nível adiciona mais "regras" ou "boas práticas" que tornam a API flexível, mais padronizada e mais fácil de usar.
 
 ### Escala Richardson:
 
-* 
+#### **Nível 0: "O Grande Serviço Monolítico" (The Swamp of POX - Plain Old XML/HTTP)**
+Este é o nível mais básico, quase como um "chamar e esquecer". Pense em um telefone onde você só pode discar um número e esperar uma única resposta.
+
+**O que acontece**: Você envia uma única requisição (geralmente um POST) para um único endereço (URL), e dentro dessa requisição você coloca tudo o que precisa: qual ação quer fazer, quais dados enviar, etc.
+
+**Analogia**: É como ligar para uma central de atendimento e, na mesma ligação, tentar fazer um pedido de pizza, cancelar uma conta e pedir para o técnico vir consertar a internet, tudo em uma única conversa.
+
+Exemplo:
+
+```xml
+POST /servicoGeral
+Content-Type: application/xml
+
+<pedido>
+    <acao>CriarPedido</acao>
+    <item>Pizza</item>
+    <quantidade>2</quantidade>
+    <cliente>João</cliente>
+</pedido>
+```
+Problemas: É difícil de entender o que a API faz sem a documentação, é inflexível e cada nova ação exige uma mudança no conteúdo da requisição.
+
+#### **Nível 1: "Recursos em Foco" (Resources)**
+Aqui, a API começa a usar recursos. Um recurso é como um "substantivo" no seu sistema: um cliente, um produto, um pedido. Cada recurso tem seu próprio endereço (URL) único.
+
+**O que acontece**: Você ainda usa o método POST para interagir, mas agora envia suas requisições para URLs específicas que representam "coisas" (recursos) no seu sistema.
+
+**Analogia**: Em vez de ligar para a central de atendimento geral, você liga para "o departamento de vendas" para pedidos de pizza, e para "o departamento financeiro" para cancelar contas. Cada departamento tem seu próprio número.
+
+**Exemplo**:
+
+```xml
+POST /pedidos   (para criar um novo pedido)
+POST /clientes  (para criar um novo cliente)
+```
+Melhoria: Já é mais fácil de entender o que você está manipulando, pois os endereços (URLs) começam a fazer sentido.
+
+
+#### **Nível 2: "Verbos do HTTP e Estados" (HTTP Verbs and Statelessness)**
+Este é o nível mais comum para a maioria das APIs REST hoje em dia. Aqui, não usamos apenas URLs para identificar recursos, mas também os métodos (verbos) do HTTP (como GET, POST, PUT, DELETE) para indicar a ação que queremos realizar sobre esses recursos.
+
+- **O que acontece**:
+  - **GET**: Para buscar/ler informações (ex: `GET /pedidos/123` para ver o pedido 123).
+  - **POST**: Para criar um novo recurso (ex: `POST /pedidos` para criar um novo pedido).
+  - **PUT**: Para atualizar um recurso existente (ex: `PUT /pedidos/123` para modificar o pedido 123).
+  - **DELETE**: Para remover um recurso (ex: `DELETE /pedidos/123` para apagar o pedido 123).
+
+- **"Sem Estado" (Statelessness)**: Significa que cada requisição que você faz para a API é independente. A API não "lembra" de requisições anteriores. Cada requisição precisa conter todas as informações necessárias para ser processada. 
+Isso torna a API mais robusta e escalável.
+
+- **Analogia**: Você vai a um restaurante. Cada vez que você pede algo, você faz um novo pedido completo. O garçom não espera que você se lembre do que pediu há 5 minutos se não houver um contexto para isso. Cada pedido é uma nova interação.
+
+- **Melhoria**: A API se torna muito mais padronizada e intuitiva. Um desenvolvedor que conhece os verbos HTTP pode "adivinhar" o que a API faz sem precisar olhar a documentação em detalhes. É a base da maioria das APIs web.
+
+#### **Nível 3: "Hipermídia como o Motor do Estado da Aplicação" (HATEOAS - Hypermedia As The Engine Of Application State)**
+Este é o nível mais avançado e completo da maturidade de Richardson. Aqui, a API não só te dá os dados, mas também te diz o que você pode fazer com esses dados em seguida. Ela inclui "links" na resposta que indicam as ações possíveis.
+
+**O que acontece**: Quando você recebe a informação de um pedido, por exemplo, a API pode incluir links dizendo: "você pode cancelar este pedido aqui", "você pode ver os detalhes do cliente aqui", "você pode adicionar um item aqui".
+
+**Analogia**: Você está navegando em um site. Cada página não só te mostra o conteúdo, mas também tem botões e links que te levam para outras páginas ou te permitem realizar ações (adicionar ao carrinho, finalizar compra, etc.). 
+Você não precisa decorar os endereços ou as ações, o próprio site te guia.
+
+**Exemplo**:
+
+```json
+
+{
+  "id": "123",
+  "status": "pendente",
+  "valor": 100.00,
+  "items": [
+    {"nome": "Pizza", "quantidade": 1}
+],
+"_links": [
+    { "rel": "cancelar", "href": "/pedidos/123/cancelar", "method": "POST" },
+    { "rel": "atualizar_status", "href": "/pedidos/123/status", "method": "PUT" },
+    { "rel": "cliente", "href": "/clientes/joao123", "method": "GET" }
+  ]
+}
+```
+Benefícios: Torna a API "autodescritiva". O cliente (o software que usa a API) pode descobrir as próximas ações sem ter que ter todo o conhecimento prévio da documentação. Isso aumenta a flexibilidade e a capacidade da API de evoluir sem quebrar os sistemas que a consomem.
